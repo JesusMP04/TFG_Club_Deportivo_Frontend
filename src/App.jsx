@@ -10,6 +10,14 @@ import Jugadores from './pages/admin/Jugadores';
 import Sesiones from './pages/admin/Sesiones';
 import Documentos from './pages/admin/Documentos';
 import Chat from './pages/admin/Chat';
+import EntrenadorDashboard from './pages/entrenador/Dashboard';
+import EntrenadorEquipos from './pages/entrenador/Equipos';
+import EntrenadorSesiones from './pages/entrenador/Sesiones';
+import EntrenadorAsistencia from './pages/entrenador/Asistencia';
+import EntrenadorChat from './pages/entrenador/Chat';
+import EntrenadorMultimedia from './pages/entrenador/Multimedia';
+
+
 
 const RutaProtegida = ({ children, roles }) => {
   const { usuario, cargando } = useAuth();
@@ -27,7 +35,6 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<Login />} />
-          <Route path="*" element={<Navigate to="/login" />} />
           <Route path="/admin/dashboard" element={<RutaProtegida roles={['admin']}><Dashboard /></RutaProtegida>}/>
           <Route path="/admin/usuarios" element={<RutaProtegida roles={['admin']}><Usuarios /></RutaProtegida>}/>
           <Route path="/admin/equipos" element={<RutaProtegida roles={['admin']}><Equipos /></RutaProtegida>} />
@@ -35,8 +42,15 @@ function App() {
           <Route path="/admin/equipos/:equipo_id/sesiones" element={<RutaProtegida roles={['admin']}><Sesiones /></RutaProtegida>} />
           <Route path="/admin/documentos" element={<RutaProtegida roles={['admin']}><Documentos /></RutaProtegida>} />
           <Route path="/admin/chat" element={<RutaProtegida roles={['admin']}><Chat /></RutaProtegida>} />
+          <Route path="/entrenador/dashboard" element={<RutaProtegida roles={['entrenador']}><EntrenadorDashboard /></RutaProtegida>} />
+          <Route path="/entrenador/equipos" element={<RutaProtegida roles={['entrenador']}><EntrenadorEquipos /></RutaProtegida>} />
+          <Route path="/entrenador/equipos/:equipo_id/sesiones" element={<RutaProtegida roles={['entrenador']}><EntrenadorSesiones /></RutaProtegida>} />
+          <Route path="/entrenador/equipos/:equipo_id/asistencia" element={<RutaProtegida roles={['entrenador']}><EntrenadorAsistencia /></RutaProtegida>} />
+          <Route path="/entrenador/chat/:sala_id" element={<RutaProtegida roles={['entrenador']}><EntrenadorChat /></RutaProtegida>} />
+          <Route path="/entrenador/equipos/:equipo_id/multimedia" element={<RutaProtegida roles={['entrenador']}><EntrenadorMultimedia /></RutaProtegida>} />
           <Route path="/register" element={<Register />} />
           <Route path="/vincular" element={<Vincular/>} />
+          <Route path="*" element={<Navigate to="/login" />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
