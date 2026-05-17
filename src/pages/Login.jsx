@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../api/axios';
 
@@ -23,7 +23,9 @@ export default function Login() {
       const rol = res.data.usuario.rol;
       if (rol === 'admin') navigate('/admin/dashboard');
       else if (rol === 'entrenador') navigate('/entrenador/dashboard');
-      else navigate('/tutor/dashboard');
+      else if (rol === 'jugador') navigate('/jugador/dashboard');
+      else if (rol === 'tutor') navigate('/tutor/dashboard');
+      else navigate('/vincular');
 
     } catch (err) {
       setError('Email o contraseña incorrectos');
@@ -84,6 +86,12 @@ export default function Login() {
               {cargando ? 'Entrando...' : 'Iniciar sesión'}
             </button>
           </form>
+          <p className="text-center text-sm text-gray-500 mt-4">
+            ¿No tienes cuenta?{' '}
+            <Link to="/register" className="text-[#2222FF] font-medium hover:underline">
+                Regístrate
+            </Link>
+          </p>
         </article>
 
       </section>
