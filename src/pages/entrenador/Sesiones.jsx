@@ -88,29 +88,29 @@ export default function Sesiones() {
       </nav>
 
       <section className="p-8">
-        <header className="flex items-center justify-between mb-8">
+        <header className="flex flex-col gap-4 mb-8 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h2 className="text-2xl font-bold text-gray-800">
               Sesiones {equipo ? `— ${equipo.nombre}` : ''}
             </h2>
             <p className="text-gray-500 mt-1">Entrenamientos y partidos del equipo</p>
           </div>
-          <section className="flex gap-3">
+          <section className="flex flex-wrap gap-2">
             <button
               onClick={() => navigate(`/entrenador/equipos/${equipo_id}/asistencia`)}
-              className="bg-gray-100 text-gray-700 text-sm font-semibold px-5 py-2.5 rounded-lg hover:bg-gray-200 transition-colors"
+              className="bg-gray-100 text-gray-700 text-sm font-semibold px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors"
             >
               📋 Asistencia
             </button>
             <button
               onClick={() => navigate(`/entrenador/equipos/${equipo_id}/multimedia`)}
-              className="bg-gray-100 text-gray-700 text-sm font-semibold px-5 py-2.5 rounded-lg hover:bg-gray-200 transition-colors"
+              className="bg-gray-100 text-gray-700 text-sm font-semibold px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors"
             >
               🎥 Multimedia
             </button>
             <button
               onClick={() => { setSesionEditar(null); setForm({ tipo: 'entrenamiento', fecha: '', descripcion: '' }); setMostrarFormulario(true); }}
-              className="bg-[#2222FF] text-white text-sm font-semibold px-5 py-2.5 rounded-lg hover:bg-blue-700 transition-colors"
+              className="bg-[#2222FF] text-white text-sm font-semibold px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
             >
               + Nueva sesión
             </button>
@@ -122,39 +122,61 @@ export default function Sesiones() {
 
         {!cargando && !error && (
           <section className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-            <table className="w-full text-sm">
-              <thead className="bg-gray-50 border-b border-gray-200">
-                <tr>
-                  <th className="text-left px-6 py-3 text-gray-600 font-medium">Tipo</th>
-                  <th className="text-left px-6 py-3 text-gray-600 font-medium">Fecha</th>
-                  <th className="text-left px-6 py-3 text-gray-600 font-medium">Descripción</th>
-                  <th className="text-left px-6 py-3 text-gray-600 font-medium">Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                {sesiones.length === 0 ? (
+            {/* Tabla para escritorio */}
+            <section className="hidden md:block bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+              <table className="w-full text-sm">
+                <thead className="bg-gray-50 border-b border-gray-200">
                   <tr>
-                    <td colSpan={4} className="px-6 py-8 text-center text-gray-400">No hay sesiones para este equipo</td>
+                    <th className="text-left px-6 py-3 text-gray-600 font-medium">Tipo</th>
+                    <th className="text-left px-6 py-3 text-gray-600 font-medium">Fecha</th>
+                    <th className="text-left px-6 py-3 text-gray-600 font-medium">Descripción</th>
+                    <th className="text-left px-6 py-3 text-gray-600 font-medium">Acciones</th>
                   </tr>
-                ) : sesiones.map(s => (
-                  <tr key={s.id} className="border-b border-gray-100 hover:bg-gray-50">
-                    <td className="px-6 py-4">
-                      <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                        s.tipo === 'partido' ? 'bg-blue-100 text-blue-700' : 'bg-green-100 text-green-700'
-                      }`}>
-                        {s.tipo}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 text-gray-600">{s.fecha?.split('T')[0]}</td>
-                    <td className="px-6 py-4 text-gray-600">{s.descripcion || '—'}</td>
-                    <td className="px-6 py-4 flex gap-3">
-                      <button onClick={() => abrirEditar(s)} className="text-[#2222FF] hover:underline text-sm font-medium">Editar</button>
-                      <button onClick={() => eliminarSesion(s.id)} className="text-red-500 hover:underline text-sm font-medium">Eliminar</button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {sesiones.length === 0 ? (
+                    <tr>
+                      <td colSpan={4} className="px-6 py-8 text-center text-gray-400">No hay sesiones para este equipo</td>
+                    </tr>
+                  ) : sesiones.map(s => (
+                    <tr key={s.id} className="border-b border-gray-100 hover:bg-gray-50">
+                      <td className="px-6 py-4">
+                        <span className={`px-2 py-1 rounded-full text-xs font-semibold ${s.tipo === 'partido' ? 'bg-blue-100 text-blue-700' : 'bg-green-100 text-green-700'}`}>
+                          {s.tipo}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 text-gray-600">{s.fecha?.split('T')[0]}</td>
+                      <td className="px-6 py-4 text-gray-600">{s.descripcion || '—'}</td>
+                      <td className="px-6 py-4 flex gap-3">
+                        <button onClick={() => abrirEditar(s)} className="text-[#2222FF] hover:underline text-sm font-medium">Editar</button>
+                        <button onClick={() => eliminarSesion(s.id)} className="text-red-500 hover:underline text-sm font-medium">Eliminar</button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </section>
+
+            {/* Tarjetas para móvil */}
+            <section className="md:hidden flex flex-col gap-4">
+              {sesiones.length === 0 ? (
+                <p className="text-center text-gray-400">No hay sesiones para este equipo</p>
+              ) : sesiones.map(s => (
+                <article key={s.id} className="bg-white rounded-2xl shadow-sm border border-gray-200 p-4">
+                  <section className="flex items-center justify-between mb-2">
+                    <span className={`px-2 py-1 rounded-full text-xs font-semibold ${s.tipo === 'partido' ? 'bg-blue-100 text-blue-700' : 'bg-green-100 text-green-700'}`}>
+                      {s.tipo}
+                    </span>
+                    <p className="text-sm text-gray-600">{s.fecha?.split('T')[0]}</p>
+                  </section>
+                  <p className="text-sm text-gray-600 mb-3">{s.descripcion || 'Sin descripción'}</p>
+                  <footer className="flex gap-3 border-t border-gray-100 pt-3">
+                    <button onClick={() => abrirEditar(s)} className="flex-1 text-center text-[#2222FF] text-sm font-medium">Editar</button>
+                    <button onClick={() => eliminarSesion(s.id)} className="flex-1 text-center text-red-500 text-sm font-medium">Eliminar</button>
+                  </footer>
+                </article>
+              ))}
+            </section>
           </section>
         )}
       </section>

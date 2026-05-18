@@ -141,13 +141,21 @@ export default function Multimedia() {
                     </label>
                     <label className="text-sm font-medium text-gray-700">
                       Archivo (imagen o vídeo, máx. 500MB)
-                      <input
-                        type="file"
-                        accept="image/*,video/*"
-                        onChange={(e) => setArchivo(e.target.files[0])}
-                        required
-                        className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm mt-1 focus:outline-none"
-                      />
+                      <section className="mt-1">
+                        <label className="w-full flex items-center gap-3 border border-gray-300 rounded-lg px-4 py-2.5 cursor-pointer hover:border-[#2222FF] transition-colors">
+                          <span className="text-[#2222FF] text-sm font-semibold whitespace-nowrap">Seleccionar archivo</span>
+                          <span className="text-sm text-gray-500 truncate">
+                            {archivo ? archivo.name : 'Ningún archivo seleccionado'}
+                          </span>
+                          <input
+                            type="file"
+                            accept="image/*,video/*"
+                            onChange={(e) => setArchivo(e.target.files[0])}
+                            required
+                            className="hidden"
+                          />
+                        </label>
+                      </section>
                     </label>
                     <button
                       type="submit"

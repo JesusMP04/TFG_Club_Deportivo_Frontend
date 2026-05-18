@@ -148,34 +148,34 @@ export default function Asistencia() {
                 {jugadores.length === 0 ? (
                   <p className="text-gray-400 text-sm">No hay jugadores en este equipo</p>
                 ) : jugadores.map(j => (
-                  <article key={j.id} className="flex flex-col py-3 border-b border-gray-100 last:border-0">
-                <section className="flex items-center justify-between">
+                <article key={j.id} className="flex flex-col py-3 border-b border-gray-100 last:border-0 gap-2">
+                  <section className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                     <p className="font-medium text-gray-800">{j.nombre} {j.apellidos}</p>
-                    <section className="flex gap-2">
-                    {['presente', 'ausente', 'justificado'].map(estado => (
+                    <section className="flex flex-wrap gap-2">
+                      {['presente', 'ausente', 'justificado'].map(estado => (
                         <button
-                        key={estado}
-                        onClick={() => marcarAsistencia(j.id, estado)}
-                        className={`px-3 py-1 rounded-lg text-xs font-semibold border transition-all ${
+                          key={estado}
+                          onClick={() => marcarAsistencia(j.id, estado)}
+                          className={`px-3 py-1 rounded-lg text-xs font-semibold border transition-all ${
                             obtenerEstado(j.id) === estado
-                            ? colorEstado(estado)
-                            : 'bg-white text-gray-400 border-gray-200 hover:border-gray-400'
-                        }`}
+                              ? colorEstado(estado)
+                              : 'bg-white text-gray-400 border-gray-200 hover:border-gray-400'
+                          }`}
                         >
-                        {estado.charAt(0).toUpperCase() + estado.slice(1)}
+                          {estado.charAt(0).toUpperCase() + estado.slice(1)}
                         </button>
-                    ))}
+                      ))}
                     </section>
-                </section>
-                {obtenerEstado(j.id) === 'justificado' && (
+                  </section>
+                  {obtenerEstado(j.id) === 'justificado' && (
                     <input
-                    type="text"
-                    placeholder="Motivo de la justificación..."
-                    defaultValue={asistencias.find(a => a.jugador_id === j.id)?.observacion || ''}
-                    onBlur={(e) => marcarObservacion(j.id, e.target.value)}
-                    className="mt-2 w-full border border-gray-200 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#2222FF]"
+                      type="text"
+                      placeholder="Motivo de la justificación..."
+                      defaultValue={asistencias.find(a => a.jugador_id === j.id)?.observacion || ''}
+                      onBlur={(e) => marcarObservacion(j.id, e.target.value)}
+                      className="w-full border border-gray-200 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#2222FF]"
                     />
-                )}
+                  )}
                 </article>
                 ))}
               </>
