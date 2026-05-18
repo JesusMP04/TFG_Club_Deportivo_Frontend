@@ -12,19 +12,19 @@ export default function Dashboard() {
 
   return (
     <main className="min-h-screen bg-gray-50">
-      <nav className="bg-[#2222FF] text-white px-6 py-4 flex items-center justify-between">
-        <h1 className="text-xl font-bold">⚽ Club Deportivo</h1>
-        <section className="flex items-center gap-4">
-          <span className="text-sm">Hola, {usuario?.nombre}</span>
+      <nav className="bg-[#2222FF] text-white px-4 py-3 flex items-center justify-between">
+        <h1 className="text-lg font-bold whitespace-nowrap">⚽ Club Deportivo</h1>
+        <section className="flex items-center gap-2">
+          <span className="text-sm hidden sm:block">Hola, {usuario?.nombre}</span>
           <button
             onClick={() => navigate('/perfil')}
-            className="bg-white text-[#2222FF] text-sm font-semibold px-4 py-1.5 rounded-lg hover:bg-gray-100 transition-colors"
+            className="bg-white text-[#2222FF] text-xs sm:text-sm font-semibold px-3 py-1.5 rounded-lg hover:bg-gray-100 transition-colors"
           >
             Mi perfil
           </button>
           <button
             onClick={handleLogout}
-            className="bg-white text-[#2222FF] text-sm font-semibold px-4 py-1.5 rounded-lg hover:bg-gray-100 transition-colors"
+            className="bg-white text-[#2222FF] text-xs sm:text-sm font-semibold px-3 py-1.5 rounded-lg hover:bg-gray-100 transition-colors"
           >
             Cerrar sesión
           </button>
