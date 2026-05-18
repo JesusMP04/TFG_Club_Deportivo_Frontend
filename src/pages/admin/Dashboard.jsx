@@ -19,6 +19,12 @@ export default function Dashboard() {
         <section className="flex items-center gap-4">
           <span className="text-sm">Hola, {usuario?.nombre}</span>
           <button
+            onClick={() => navigate('/perfil')}
+            className="bg-white text-[#2222FF] text-sm font-semibold px-4 py-1.5 rounded-lg hover:bg-gray-100 transition-colors"
+          >
+            Mi perfil
+          </button>
+          <button
             onClick={handleLogout}
             className="bg-white text-[#2222FF] text-sm font-semibold px-4 py-1.5 rounded-lg hover:bg-gray-100 transition-colors"
           >
