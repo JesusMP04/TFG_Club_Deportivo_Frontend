@@ -41,7 +41,7 @@ export default function Dashboard() {
           {[
             { titulo: 'Mis Hijos', descripcion: 'Ver el perfil y sesiones de tu hijo/a', icono: '👦', ruta: '/tutor/hijos' },
             { titulo: 'Documentos', descripcion: 'Subir DNI y reconocimiento médico', icono: '📄', ruta: '/tutor/documentos' },
-            { titulo: 'Chat General', descripcion: 'Comunicación con el club', icono: '💬', ruta: '/tutor/chat/general' },
+            { titulo: 'Tablon de anuncios', descripcion: 'Anuncios del club', icono: '📢', ruta: '/tutor/chat/general' },
           ].map((item) => (
             <article
               key={item.ruta}
