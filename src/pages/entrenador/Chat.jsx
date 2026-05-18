@@ -67,14 +67,14 @@ export default function Chat() {
     }
   };
 
-  const titulaSala = sala_id === 'general' ? 'Chat General' : `Chat Equipo`;
+  const titulaSala = sala_id === 'general' ? 'Tablón de Anuncios' : `Chat — ${decodeURIComponent(sala_id)}`;
 
   return (
     <main className="min-h-screen bg-gray-50 flex flex-col">
       <nav className="bg-[#2222FF] text-white px-6 py-4 flex items-center justify-between">
         <h1 className="text-xl font-bold">⚽ Club Deportivo</h1>
         <button
-          onClick={() => navigate('/entrenador/dashboard')}
+          onClick={() => navigate(-1)}
           className="bg-white text-[#2222FF] text-sm font-semibold px-4 py-1.5 rounded-lg hover:bg-gray-100 transition-colors"
         >
           ← Volver
@@ -84,13 +84,17 @@ export default function Chat() {
       <section className="flex flex-col flex-1 p-8 max-w-3xl mx-auto w-full">
         <header className="mb-6">
           <h2 className="text-2xl font-bold text-gray-800">{titulaSala}</h2>
-          <p className="text-gray-500 mt-1">Sala: {sala_id}</p>
+          {sala_id === 'general' && (
+            <p className="text-gray-500 mt-1">Solo los administradores pueden publicar anuncios</p>
+          )}
         </header>
 
         <section className="flex-1 bg-white rounded-2xl shadow-sm border border-gray-200 p-6 overflow-y-auto mb-4 min-h-96">
           {cargando && <p className="text-gray-400 text-center">Cargando mensajes...</p>}
           {!cargando && mensajes.length === 0 && (
-            <p className="text-gray-400 text-center">No hay mensajes aún. ¡Sé el primero!</p>
+            <p className="text-gray-400 text-center">
+              {sala_id === 'general' ? 'No hay anuncios todavía' : 'No hay mensajes aún. ¡Sé el primero!'}
+            </p>
           )}
           {mensajes.map(m => (
             <article key={m.id} className={`mb-4 flex ${m.autor_id === usuario?.id ? 'justify-end' : 'justify-start'}`}>
@@ -133,21 +137,27 @@ export default function Chat() {
           <div ref={bottomRef} />
         </section>
 
-        <form onSubmit={enviarMensaje} className="flex gap-3">
-          <input
-            type="text"
-            value={contenido}
-            onChange={(e) => setContenido(e.target.value)}
-            placeholder="Escribe un mensaje..."
-            className="flex-1 border border-gray-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#2222FF]"
-          />
-          <button
-            type="submit"
-            className="bg-[#2222FF] text-white font-semibold px-6 py-3 rounded-xl hover:bg-blue-700 transition-colors"
-          >
-            Enviar
-          </button>
-        </form>
+        {sala_id === 'general' && usuario?.rol !== 'admin' ? (
+          <p className="text-center text-sm text-gray-400 py-3 bg-white rounded-xl border border-gray-200">
+            📢 Solo los administradores pueden publicar en el tablón de anuncios
+          </p>
+        ) : (
+          <form onSubmit={enviarMensaje} className="flex gap-3">
+            <input
+              type="text"
+              value={contenido}
+              onChange={(e) => setContenido(e.target.value)}
+              placeholder={sala_id === 'general' ? 'Escribe un anuncio...' : 'Escribe un mensaje...'}
+              className="flex-1 border border-gray-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#2222FF]"
+            />
+            <button
+              type="submit"
+              className="bg-[#2222FF] text-white font-semibold px-6 py-3 rounded-xl hover:bg-blue-700 transition-colors"
+            >
+              {sala_id === 'general' ? 'Publicar' : 'Enviar'}
+            </button>
+          </form>
+        )}
       </section>
     </main>
   );
