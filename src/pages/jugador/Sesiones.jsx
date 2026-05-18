@@ -80,34 +80,52 @@ export default function Sesiones() {
 
         {!cargando && equipo?.equipo_id && (
           <section className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+            {/* Tabla para escritorio */}
+            <section className="hidden md:block bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
             <table className="w-full text-sm">
-              <thead className="bg-gray-50 border-b border-gray-200">
+                <thead className="bg-gray-50 border-b border-gray-200">
                 <tr>
-                  <th className="text-left px-6 py-3 text-gray-600 font-medium">Tipo</th>
-                  <th className="text-left px-6 py-3 text-gray-600 font-medium">Fecha</th>
-                  <th className="text-left px-6 py-3 text-gray-600 font-medium">Descripción</th>
+                    <th className="text-left px-6 py-3 text-gray-600 font-medium">Tipo</th>
+                    <th className="text-left px-6 py-3 text-gray-600 font-medium">Fecha</th>
+                    <th className="text-left px-6 py-3 text-gray-600 font-medium">Descripción</th>
                 </tr>
-              </thead>
-              <tbody>
+                </thead>
+                <tbody>
                 {sesiones.length === 0 ? (
-                  <tr>
+                    <tr>
                     <td colSpan={3} className="px-6 py-8 text-center text-gray-400">No hay sesiones programadas</td>
-                  </tr>
+                    </tr>
                 ) : sesiones.map(s => (
-                  <tr key={s.id} className="border-b border-gray-100 hover:bg-gray-50">
+                    <tr key={s.id} className="border-b border-gray-100 hover:bg-gray-50">
                     <td className="px-6 py-4">
-                      <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                        s.tipo === 'partido' ? 'bg-blue-100 text-blue-700' : 'bg-green-100 text-green-700'
-                      }`}>
+                        <span className={`px-2 py-1 rounded-full text-xs font-semibold ${s.tipo === 'partido' ? 'bg-blue-100 text-blue-700' : 'bg-green-100 text-green-700'}`}>
                         {s.tipo}
-                      </span>
+                        </span>
                     </td>
                     <td className="px-6 py-4 text-gray-600">{s.fecha?.split('T')[0]}</td>
                     <td className="px-6 py-4 text-gray-600">{s.descripcion || '—'}</td>
-                  </tr>
+                    </tr>
                 ))}
-              </tbody>
+                </tbody>
             </table>
+            </section>
+
+            {/* Tarjetas para móvil */}
+            <section className="md:hidden flex flex-col gap-4">
+            {sesiones.length === 0 ? (
+                <p className="text-center text-gray-400">No hay sesiones programadas</p>
+            ) : sesiones.map(s => (
+                <article key={s.id} className="bg-white rounded-2xl shadow-sm border border-gray-200 p-4">
+                <section className="flex items-center justify-between mb-2">
+                    <span className={`px-2 py-1 rounded-full text-xs font-semibold ${s.tipo === 'partido' ? 'bg-blue-100 text-blue-700' : 'bg-green-100 text-green-700'}`}>
+                    {s.tipo}
+                    </span>
+                    <p className="text-sm text-gray-600">{s.fecha?.split('T')[0]}</p>
+                </section>
+                <p className="text-sm text-gray-600">{s.descripcion || 'Sin descripción'}</p>
+                </article>
+            ))}
+            </section>
           </section>
         )}
       </section>
