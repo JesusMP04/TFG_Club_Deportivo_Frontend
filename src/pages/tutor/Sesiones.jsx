@@ -11,7 +11,6 @@ export default function Sesiones() {
 
   useEffect(() => {
     cargarSesiones();
-    cargarEquipo();
   }, []);
 
   const cargarSesiones = async () => {
@@ -22,15 +21,6 @@ export default function Sesiones() {
       console.error('Error al cargar sesiones');
     } finally {
       setCargando(false);
-    }
-  };
-
-  const cargarEquipo = async () => {
-    try {
-      const res = await api.get(`/equipos/${equipo_id}`);
-      setEquipo(res.data.equipo);
-    } catch (err) {
-      console.error('Error al cargar equipo');
     }
   };
 
@@ -52,9 +42,7 @@ export default function Sesiones() {
 
       <section className="p-8">
         <header className="mb-8">
-          <h2 className="text-2xl font-bold text-gray-800">
-            Partidos {equipo ? `— ${equipo.nombre}` : ''}
-          </h2>
+          <h2 className="text-2xl font-bold text-gray-800">Partidos</h2>
           <p className="text-gray-500 mt-1">Calendario de partidos</p>
         </header>
 
