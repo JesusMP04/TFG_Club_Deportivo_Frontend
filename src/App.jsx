@@ -21,6 +21,9 @@ import TutorHijos from './pages/tutor/Hijos';
 import TutorSesiones from './pages/tutor/Sesiones';
 import TutorDocumentos from './pages/tutor/Documentos';
 import TutorChat from './pages/entrenador/Chat';
+import JugadorDashboard from './pages/jugador/Dashboard';
+import JugadorSesiones from './pages/jugador/Sesiones';
+
 
 
 
@@ -58,6 +61,10 @@ function App() {
           <Route path="/tutor/sesiones/:equipo_id" element={<RutaProtegida roles={['tutor']}><TutorSesiones /></RutaProtegida>} />
           <Route path="/tutor/documentos" element={<RutaProtegida roles={['tutor']}><TutorDocumentos /></RutaProtegida>} />
           <Route path="/tutor/chat/:sala_id" element={<RutaProtegida roles={['tutor']}><TutorChat /></RutaProtegida>} />
+          <Route path="/jugador/dashboard" element={<RutaProtegida roles={['jugador']}><JugadorDashboard /></RutaProtegida>} />
+          <Route path="/jugador/sesiones" element={<RutaProtegida roles={['jugador']}><JugadorSesiones /></RutaProtegida>} />
+          <Route path="/jugador/sesiones" element={<RutaProtegida roles={['jugador']}><JugadorSesiones /></RutaProtegida>} />
+          <Route path="/jugador/chat/:sala_id" element={<RutaProtegida roles={['jugador']}><EntrenadorChat /></RutaProtegida>} />
 
           <Route path="/register" element={<Register />} />
           <Route path="/vincular" element={<Vincular/>} />
