@@ -111,33 +111,54 @@ export default function Jugadores() {
 
         {!cargando && !error && (
           <section className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-            <table className="w-full text-sm">
-              <thead className="bg-gray-50 border-b border-gray-200">
-                <tr>
-                  <th className="text-left px-6 py-3 text-gray-600 font-medium">Nombre</th>
-                  <th className="text-left px-6 py-3 text-gray-600 font-medium">Fecha nac.</th>
-                  <th className="text-left px-6 py-3 text-gray-600 font-medium">Equipo</th>
-                  <th className="text-left px-6 py-3 text-gray-600 font-medium">Código vinc.</th>
-                  <th className="text-left px-6 py-3 text-gray-600 font-medium">Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                {jugadores.map(j => (
-                  <tr key={j.id} className="border-b border-gray-100 hover:bg-gray-50">
-                    <td className="px-6 py-4 font-medium text-gray-800">{j.nombre} {j.apellidos}</td>
-                    <td className="px-6 py-4 text-gray-600">{j.fecha_nac?.split('T')[0] || '—'}</td>
-                    <td className="px-6 py-4 text-gray-600">{nombreEquipo(j.equipo_id)}</td>
-                    <td className="px-6 py-4">
-                      <span className="font-mono text-xs bg-gray-100 px-2 py-1 rounded">{j.codigo_vinculacion}</span>
-                    </td>
-                    <td className="px-6 py-4 flex gap-3">
-                      <button onClick={() => abrirEditar(j)} className="text-[#2222FF] hover:underline text-sm font-medium">Editar</button>
-                      <button onClick={() => eliminarJugador(j.id)} className="text-red-500 hover:underline text-sm font-medium">Eliminar</button>
-                    </td>
+            {/* Tabla para escritorio */}
+            <section className="hidden md:block bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+              <table className="w-full text-sm">
+                <thead className="bg-gray-50 border-b border-gray-200">
+                  <tr>
+                    <th className="text-left px-6 py-3 text-gray-600 font-medium">Nombre</th>
+                    <th className="text-left px-6 py-3 text-gray-600 font-medium">Fecha nac.</th>
+                    <th className="text-left px-6 py-3 text-gray-600 font-medium">Equipo</th>
+                    <th className="text-left px-6 py-3 text-gray-600 font-medium">Código vinc.</th>
+                    <th className="text-left px-6 py-3 text-gray-600 font-medium">Acciones</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {jugadores.map(j => (
+                    <tr key={j.id} className="border-b border-gray-100 hover:bg-gray-50">
+                      <td className="px-6 py-4 font-medium text-gray-800">{j.nombre} {j.apellidos}</td>
+                      <td className="px-6 py-4 text-gray-600">{j.fecha_nac?.split('T')[0] || '—'}</td>
+                      <td className="px-6 py-4 text-gray-600">{nombreEquipo(j.equipo_id)}</td>
+                      <td className="px-6 py-4">
+                        <span className="font-mono text-xs bg-gray-100 px-2 py-1 rounded">{j.codigo_vinculacion}</span>
+                      </td>
+                      <td className="px-6 py-4 flex gap-3">
+                        <button onClick={() => abrirEditar(j)} className="text-[#2222FF] hover:underline text-sm font-medium">Editar</button>
+                        <button onClick={() => eliminarJugador(j.id)} className="text-red-500 hover:underline text-sm font-medium">Eliminar</button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </section>
+
+            {/* Tarjetas para móvil */}
+            <section className="md:hidden flex flex-col gap-4">
+              {jugadores.map(j => (
+                <article key={j.id} className="bg-white rounded-2xl shadow-sm border border-gray-200 p-4">
+                  <section className="flex items-center justify-between mb-2">
+                    <h3 className="font-semibold text-gray-800">{j.nombre} {j.apellidos}</h3>
+                    <span className="font-mono text-xs bg-gray-100 px-2 py-1 rounded">{j.codigo_vinculacion}</span>
+                  </section>
+                  <p className="text-sm text-gray-600 mb-1">Nacimiento: {j.fecha_nac?.split('T')[0] || '—'}</p>
+                  <p className="text-sm text-gray-600 mb-3">Equipo: {nombreEquipo(j.equipo_id)}</p>
+                  <footer className="flex gap-3 border-t border-gray-100 pt-3">
+                    <button onClick={() => abrirEditar(j)} className="flex-1 text-center text-[#2222FF] text-sm font-medium">Editar</button>
+                    <button onClick={() => eliminarJugador(j.id)} className="flex-1 text-center text-red-500 text-sm font-medium">Eliminar</button>
+                  </footer>
+                </article>
+              ))}
+            </section>
           </section>
         )}
       </section>

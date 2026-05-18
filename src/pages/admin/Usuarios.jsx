@@ -72,49 +72,66 @@ export default function Usuarios() {
 
         {!cargando && !error && (
           <section className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-            <table className="w-full text-sm">
-              <thead className="bg-gray-50 border-b border-gray-200">
-                <tr>
-                  <th className="text-left px-6 py-3 text-gray-600 font-medium">Nombre</th>
-                  <th className="text-left px-6 py-3 text-gray-600 font-medium">Email</th>
-                  <th className="text-left px-6 py-3 text-gray-600 font-medium">Teléfono</th>
-                  <th className="text-left px-6 py-3 text-gray-600 font-medium">Rol</th>
-                  <th className="text-left px-6 py-3 text-gray-600 font-medium">Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                {usuarios.map(u => (
-                  <tr key={u.id} className="border-b border-gray-100 hover:bg-gray-50">
-                    <td className="px-6 py-4 font-medium text-gray-800">{u.nombre} {u.apellidos}</td>
-                    <td className="px-6 py-4 text-gray-600">{u.email}</td>
-                    <td className="px-6 py-4 text-gray-600">{u.telefono || '—'}</td>
-                    <td className="px-6 py-4">
-                      <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                        u.rol === 'admin' ? 'bg-blue-100 text-blue-700' :
-                        u.rol === 'entrenador' ? 'bg-green-100 text-green-700' :
-                        'bg-gray-100 text-gray-700'
-                      }`}>
-                        {u.rol}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 flex gap-3">
-                      <button
-                        onClick={() => setUsuarioEditar({ ...u })}
-                        className="text-[#2222FF] hover:underline text-sm font-medium"
-                      >
-                        Editar
-                      </button>
-                      <button
-                        onClick={() => eliminarUsuario(u.id)}
-                        className="text-red-500 hover:underline text-sm font-medium"
-                      >
-                        Eliminar
-                      </button>
-                    </td>
+            {/* Tabla para escritorio */}
+            <section className="hidden md:block bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+              <table className="w-full text-sm">
+                <thead className="bg-gray-50 border-b border-gray-200">
+                  <tr>
+                    <th className="text-left px-6 py-3 text-gray-600 font-medium">Nombre</th>
+                    <th className="text-left px-6 py-3 text-gray-600 font-medium">Email</th>
+                    <th className="text-left px-6 py-3 text-gray-600 font-medium">Teléfono</th>
+                    <th className="text-left px-6 py-3 text-gray-600 font-medium">Rol</th>
+                    <th className="text-left px-6 py-3 text-gray-600 font-medium">Acciones</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {usuarios.map(u => (
+                    <tr key={u.id} className="border-b border-gray-100 hover:bg-gray-50">
+                      <td className="px-6 py-4 font-medium text-gray-800">{u.nombre} {u.apellidos}</td>
+                      <td className="px-6 py-4 text-gray-600">{u.email}</td>
+                      <td className="px-6 py-4 text-gray-600">{u.telefono || '—'}</td>
+                      <td className="px-6 py-4">
+                        <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                          u.rol === 'admin' ? 'bg-blue-100 text-blue-700' :
+                          u.rol === 'entrenador' ? 'bg-green-100 text-green-700' :
+                          'bg-gray-100 text-gray-700'
+                        }`}>
+                          {u.rol}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 flex gap-3">
+                        <button onClick={() => setUsuarioEditar({ ...u })} className="text-[#2222FF] hover:underline text-sm font-medium">Editar</button>
+                        <button onClick={() => eliminarUsuario(u.id)} className="text-red-500 hover:underline text-sm font-medium">Eliminar</button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </section>
+
+            {/* Tarjetas para móvil */}
+            <section className="md:hidden flex flex-col gap-4">
+              {usuarios.map(u => (
+                <article key={u.id} className="bg-white rounded-2xl shadow-sm border border-gray-200 p-4">
+                  <section className="flex items-center justify-between mb-3">
+                    <h3 className="font-semibold text-gray-800">{u.nombre} {u.apellidos}</h3>
+                    <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                      u.rol === 'admin' ? 'bg-blue-100 text-blue-700' :
+                      u.rol === 'entrenador' ? 'bg-green-100 text-green-700' :
+                      'bg-gray-100 text-gray-700'
+                    }`}>
+                      {u.rol}
+                    </span>
+                  </section>
+                  <p className="text-sm text-gray-600 mb-1">{u.email}</p>
+                  <p className="text-sm text-gray-600 mb-3">{u.telefono || 'Sin teléfono'}</p>
+                  <footer className="flex gap-3 border-t border-gray-100 pt-3">
+                    <button onClick={() => setUsuarioEditar({ ...u })} className="flex-1 text-center text-[#2222FF] text-sm font-medium">Editar</button>
+                    <button onClick={() => eliminarUsuario(u.id)} className="flex-1 text-center text-red-500 text-sm font-medium">Eliminar</button>
+                  </footer>
+                </article>
+              ))}
+            </section>
           </section>
         )}
       </section>

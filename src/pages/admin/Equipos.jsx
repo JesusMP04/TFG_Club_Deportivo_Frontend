@@ -101,34 +101,59 @@ export default function Equipos() {
 
         {!cargando && !error && (
           <section className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-            <table className="w-full text-sm">
-              <thead className="bg-gray-50 border-b border-gray-200">
-                <tr>
-                  <th className="text-left px-6 py-3 text-gray-600 font-medium">Nombre</th>
-                  <th className="text-left px-6 py-3 text-gray-600 font-medium">Temporada</th>
-                  <th className="text-left px-6 py-3 text-gray-600 font-medium">Entrenador</th>
-                  <th className="text-left px-6 py-3 text-gray-600 font-medium">Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                {equipos.map(e => (
-                  <tr key={e.id} className="border-b border-gray-100 hover:bg-gray-50">
-                    <td className="px-6 py-4 font-medium text-gray-800">{e.nombre}</td>
-                    <td className="px-6 py-4 text-gray-600">{e.temporada}</td>
-                    <td className="px-6 py-4 text-gray-600">
-                      {entrenadores.find(u => u.id === e.entrenador_id)
-                        ? `${entrenadores.find(u => u.id === e.entrenador_id).nombre} ${entrenadores.find(u => u.id === e.entrenador_id).apellidos}`
-                        : '—'}
-                    </td>
-                     <td className="px-6 py-4 flex gap-3">
+            {/* Tabla para escritorio */}
+            <section className="hidden md:block bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+              <table className="w-full text-sm">
+                <thead className="bg-gray-50 border-b border-gray-200">
+                  <tr>
+                    <th className="text-left px-6 py-3 text-gray-600 font-medium">Nombre</th>
+                    <th className="text-left px-6 py-3 text-gray-600 font-medium">Temporada</th>
+                    <th className="text-left px-6 py-3 text-gray-600 font-medium">Entrenador</th>
+                    <th className="text-left px-6 py-3 text-gray-600 font-medium">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {equipos.map(e => (
+                    <tr key={e.id} className="border-b border-gray-100 hover:bg-gray-50">
+                      <td className="px-6 py-4 font-medium text-gray-800">{e.nombre}</td>
+                      <td className="px-6 py-4 text-gray-600">{e.temporada}</td>
+                      <td className="px-6 py-4 text-gray-600">
+                        {entrenadores.find(u => u.id === e.entrenador_id)
+                          ? `${entrenadores.find(u => u.id === e.entrenador_id).nombre} ${entrenadores.find(u => u.id === e.entrenador_id).apellidos}`
+                          : '—'}
+                      </td>
+                      <td className="px-6 py-4 flex gap-3">
                         <button onClick={() => navigate(`/admin/equipos/${e.id}/sesiones`)} className="text-green-600 hover:underline text-sm font-medium">Sesiones</button>
                         <button onClick={() => abrirEditar(e)} className="text-[#2222FF] hover:underline text-sm font-medium">Editar</button>
                         <button onClick={() => eliminarEquipo(e.id)} className="text-red-500 hover:underline text-sm font-medium">Eliminar</button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </section>
+
+            {/* Tarjetas para móvil */}
+            <section className="md:hidden flex flex-col gap-4">
+              {equipos.map(e => (
+                <article key={e.id} className="bg-white rounded-2xl shadow-sm border border-gray-200 p-4">
+                  <section className="flex items-center justify-between mb-2">
+                    <h3 className="font-semibold text-gray-800">{e.nombre}</h3>
+                    <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">{e.temporada}</span>
+                  </section>
+                  <p className="text-sm text-gray-600 mb-3">
+                    {entrenadores.find(u => u.id === e.entrenador_id)
+                      ? `${entrenadores.find(u => u.id === e.entrenador_id).nombre} ${entrenadores.find(u => u.id === e.entrenador_id).apellidos}`
+                      : 'Sin entrenador'}
+                  </p>
+                  <footer className="flex gap-2 border-t border-gray-100 pt-3">
+                    <button onClick={() => navigate(`/admin/equipos/${e.id}/sesiones`)} className="flex-1 text-center text-green-600 text-sm font-medium">Sesiones</button>
+                    <button onClick={() => abrirEditar(e)} className="flex-1 text-center text-[#2222FF] text-sm font-medium">Editar</button>
+                    <button onClick={() => eliminarEquipo(e.id)} className="flex-1 text-center text-red-500 text-sm font-medium">Eliminar</button>
+                  </footer>
+                </article>
+              ))}
+            </section>
           </section>
         )}
       </section>

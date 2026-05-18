@@ -56,51 +56,60 @@ export default function Documentos() {
 
         {!cargando && !error && (
           <section className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-            <table className="w-full text-sm">
-              <thead className="bg-gray-50 border-b border-gray-200">
-                <tr>
-                  <th className="text-left px-6 py-3 text-gray-600 font-medium">Título</th>
-                  <th className="text-left px-6 py-3 text-gray-600 font-medium">Usuario</th>
-                  <th className="text-left px-6 py-3 text-gray-600 font-medium">Fecha subida</th>
-                  <th className="text-left px-6 py-3 text-gray-600 font-medium">Estado</th>
-                  <th className="text-left px-6 py-3 text-gray-600 font-medium">Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                {documentos.length === 0 ? (
+            {/* Tabla para escritorio */}
+            <section className="hidden md:block bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+              <table className="w-full text-sm">
+                <thead className="bg-gray-50 border-b border-gray-200">
                   <tr>
-                    <td colSpan={5} className="px-6 py-8 text-center text-gray-400">No hay documentos pendientes</td>
+                    <th className="text-left px-6 py-3 text-gray-600 font-medium">Título</th>
+                    <th className="text-left px-6 py-3 text-gray-600 font-medium">Usuario</th>
+                    <th className="text-left px-6 py-3 text-gray-600 font-medium">Fecha subida</th>
+                    <th className="text-left px-6 py-3 text-gray-600 font-medium">Estado</th>
+                    <th className="text-left px-6 py-3 text-gray-600 font-medium">Acciones</th>
                   </tr>
-                ) : documentos.map(d => (
-                  <tr key={d.id} className="border-b border-gray-100 hover:bg-gray-50">
-                    <td className="px-6 py-4 font-medium text-gray-800">{d.titulo}</td>
-                    <td className="px-6 py-4 text-gray-600">{d.usuario_id}</td>
-                    <td className="px-6 py-4 text-gray-600">{d.fecha_subida?.split('T')[0]}</td>
-                    <td className="px-6 py-4">
-                      <span className="px-2 py-1 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-700">
-                        {d.estado}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 flex gap-3">
-                      
-                        href={d.url_archivo}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="text-[#2222FF] hover:underline text-sm font-medium"
-                      <a>
-                        Ver
-                      </a>
-                      <button
-                        onClick={() => eliminarDocumento(d.id)}
-                        className="text-red-500 hover:underline text-sm font-medium"
-                      >
-                        Eliminar
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {documentos.length === 0 ? (
+                    <tr>
+                      <td colSpan={5} className="px-6 py-8 text-center text-gray-400">No hay documentos pendientes</td>
+                    </tr>
+                  ) : documentos.map(d => (
+                    <tr key={d.id} className="border-b border-gray-100 hover:bg-gray-50">
+                      <td className="px-6 py-4 font-medium text-gray-800">{d.titulo}</td>
+                      <td className="px-6 py-4 text-gray-600">{d.usuario_id}</td>
+                      <td className="px-6 py-4 text-gray-600">{d.fecha_subida?.split('T')[0]}</td>
+                      <td className="px-6 py-4">
+                        <span className="px-2 py-1 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-700">{d.estado}</span>
+                      </td>
+                      <td className="px-6 py-4 flex gap-3">
+                        <a href={d.url_archivo} target="_blank" rel="noreferrer" className="text-[#2222FF] hover:underline text-sm font-medium">Ver</a>
+                        <button onClick={() => eliminarDocumento(d.id)} className="text-red-500 hover:underline text-sm font-medium">Eliminar</button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </section>
+
+            {/* Tarjetas para móvil */}
+            <section className="md:hidden flex flex-col gap-4">
+              {documentos.length === 0 ? (
+                <p className="text-center text-gray-400">No hay documentos pendientes</p>
+              ) : documentos.map(d => (
+                <article key={d.id} className="bg-white rounded-2xl shadow-sm border border-gray-200 p-4">
+                  <section className="flex items-center justify-between mb-2">
+                    <h3 className="font-semibold text-gray-800">{d.titulo}</h3>
+                    <span className="px-2 py-1 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-700">{d.estado}</span>
+                  </section>
+                  <p className="text-sm text-gray-600 mb-1">Usuario: {d.usuario_id}</p>
+                  <p className="text-sm text-gray-600 mb-3">Fecha: {d.fecha_subida?.split('T')[0]}</p>
+                  <footer className="flex gap-3 border-t border-gray-100 pt-3">
+                    <a href={d.url_archivo} target="_blank" rel="noreferrer" className="flex-1 text-center text-[#2222FF] text-sm font-medium">Ver</a>
+                    <button onClick={() => eliminarDocumento(d.id)} className="flex-1 text-center text-red-500 text-sm font-medium">Eliminar</button>
+                  </footer>
+                </article>
+              ))}
+            </section>
           </section>
         )}
       </section>
