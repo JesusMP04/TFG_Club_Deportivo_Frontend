@@ -56,6 +56,8 @@ export default function Register() {
               Nombre
               <input
                 type="text"
+                id="nombre"
+                name="nombre"
                 value={form.nombre}
                 onChange={(e) => setForm({ ...form, nombre: e.target.value })}
                 required
@@ -68,6 +70,8 @@ export default function Register() {
               Apellidos
               <input
                 type="text"
+                id="apellidos"
+                name="apellidos"
                 value={form.apellidos}
                 onChange={(e) => setForm({ ...form, apellidos: e.target.value })}
                 required
@@ -80,6 +84,8 @@ export default function Register() {
               Email
               <input
                 type="email"
+                id="email"
+                name="email"
                 value={form.email}
                 onChange={(e) => setForm({ ...form, email: e.target.value })}
                 required
@@ -92,6 +98,8 @@ export default function Register() {
               Teléfono
               <input
                 type="tel"
+                id="tel"
+                name="tel"
                 value={form.telefono}
                 onChange={(e) => setForm({ ...form, telefono: e.target.value })}
                 className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm mt-1 focus:outline-none focus:ring-2 focus:ring-[#2222FF]"
@@ -103,6 +111,8 @@ export default function Register() {
               Contraseña
               <input
                 type="password"
+                id="password"
+                name="password"
                 value={form.password}
                 onChange={(e) => setForm({ ...form, password: e.target.value })}
                 required
