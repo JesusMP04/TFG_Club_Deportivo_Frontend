@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../api/axios';
+import ModalConfirmacion from '../../components/ModalConfirmacion';
 
 export default function Documentos() {
   const [documentos, setDocumentos] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const [modalEliminar, setModalEliminar] = useState(null);
 
   useEffect(() => {
     cargarDocumentos();
@@ -24,10 +26,10 @@ export default function Documentos() {
   };
 
   const eliminarDocumento = async (id) => {
-    if (!confirm('¿Seguro que quieres eliminar este documento?')) return;
     try {
       await api.delete(`/documentos/${id}`);
       setDocumentos(documentos.filter(d => d.id !== id));
+      setModalEliminar(null);
     } catch (err) {
       alert('Error al eliminar el documento');
     }
@@ -83,7 +85,7 @@ export default function Documentos() {
                       </td>
                       <td className="px-6 py-4 flex gap-3">
                         <a href={d.url_archivo} target="_blank" rel="noreferrer" className="text-[#2222FF] hover:underline text-sm font-medium">Ver</a>
-                        <button onClick={() => eliminarDocumento(d.id)} className="text-red-500 hover:underline text-sm font-medium">Eliminar</button>
+                        <button onClick={() => setModalEliminar(d.id)} className="text-red-500 hover:underline text-sm font-medium">Eliminar</button>
                       </td>
                     </tr>
                   ))}
@@ -105,7 +107,7 @@ export default function Documentos() {
                   <p className="text-sm text-gray-600 mb-3">Fecha: {d.fecha_subida?.split('T')[0]}</p>
                   <footer className="flex gap-3 border-t border-gray-100 pt-3">
                     <a href={d.url_archivo} target="_blank" rel="noreferrer" className="flex-1 text-center text-[#2222FF] text-sm font-medium">Ver</a>
-                    <button onClick={() => eliminarDocumento(d.id)} className="flex-1 text-center text-red-500 text-sm font-medium">Eliminar</button>
+                    <button onClick={() => setModalEliminar(d.id)} className="flex-1 text-center text-red-500 text-sm font-medium">Eliminar</button>
                   </footer>
                 </article>
               ))}
@@ -113,6 +115,13 @@ export default function Documentos() {
           </section>
         )}
       </section>
+      {modalEliminar && (
+        <ModalConfirmacion
+          mensaje="Esta acción eliminará el documento permanentemente."
+          onConfirmar={() => eliminarDocumento(modalEliminar)}
+          onCancelar={() => setModalEliminar(null)}
+        />
+      )}
     </main>
   );
 }

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../api/axios';
+import ModalConfirmacion from '../../components/ModalConfirmacion';
 
 export default function Equipos() {
   const [equipos, setEquipos] = useState([]);
@@ -11,6 +12,8 @@ export default function Equipos() {
   const [entrenadores, setEntrenadores] = useState([]);
   const [form, setForm] = useState({ nombre: '', temporada: '', entrenador_id: '' });
   const navigate = useNavigate();
+  const [modalEliminar, setModalEliminar] = useState(null);
+
 
   useEffect(() => {
     cargarEquipos();
@@ -55,10 +58,10 @@ export default function Equipos() {
   };
 
   const eliminarEquipo = async (id) => {
-    if (!confirm('¿Seguro que quieres eliminar este equipo?')) return;
     try {
       await api.delete(`/equipos/${id}`);
       setEquipos(equipos.filter(e => e.id !== id));
+      setModalEliminar(null);
     } catch (err) {
       alert('Error al eliminar el equipo');
     }
@@ -125,7 +128,7 @@ export default function Equipos() {
                       <td className="px-6 py-4 flex gap-3">
                         <button onClick={() => navigate(`/admin/equipos/${e.id}/sesiones`)} className="text-green-600 hover:underline text-sm font-medium">Sesiones</button>
                         <button onClick={() => abrirEditar(e)} className="text-[#2222FF] hover:underline text-sm font-medium">Editar</button>
-                        <button onClick={() => eliminarEquipo(e.id)} className="text-red-500 hover:underline text-sm font-medium">Eliminar</button>
+                        <button onClick={() => setModalEliminar(e.id)} className="text-red-500 hover:underline text-sm font-medium">Eliminar</button>
                       </td>
                     </tr>
                   ))}
@@ -149,7 +152,7 @@ export default function Equipos() {
                   <footer className="flex gap-2 border-t border-gray-100 pt-3">
                     <button onClick={() => navigate(`/admin/equipos/${e.id}/sesiones`)} className="flex-1 text-center text-green-600 text-sm font-medium">Sesiones</button>
                     <button onClick={() => abrirEditar(e)} className="flex-1 text-center text-[#2222FF] text-sm font-medium">Editar</button>
-                    <button onClick={() => eliminarEquipo(e.id)} className="flex-1 text-center text-red-500 text-sm font-medium">Eliminar</button>
+                    <button onClick={() => setModalEliminar(e.id)} className="flex-1 text-center text-red-500 text-sm font-medium">Eliminar</button>
                   </footer>
                 </article>
               ))}
@@ -211,6 +214,14 @@ export default function Equipos() {
             </form>
           </article>
         </div>
+      )}
+
+      {modalEliminar && (
+        <ModalConfirmacion
+          mensaje="Esta acción eliminará el equipo permanentemente."
+          onConfirmar={() => eliminarEquipo(modalEliminar)}
+          onCancelar={() => setModalEliminar(null)}
+        />
       )}
     </main>
   );

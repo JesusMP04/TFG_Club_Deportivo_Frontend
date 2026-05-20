@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import api from '../../api/axios';
+import ModalConfirmacion from '../../components/ModalConfirmacion';
 
 export default function Multimedia() {
   const { equipo_id } = useParams();
@@ -12,6 +13,7 @@ export default function Multimedia() {
   const [titulo, setTitulo] = useState('');
   const [archivo, setArchivo] = useState(null);
   const navigate = useNavigate();
+  const [modalEliminar, setModalEliminar] = useState(null);
 
   useEffect(() => {
     cargarSesiones();
@@ -65,10 +67,10 @@ export default function Multimedia() {
   };
 
   const eliminarArchivo = async (id) => {
-    if (!confirm('¿Seguro que quieres eliminar este archivo?')) return;
     try {
       await api.delete(`/multimedia/${id}`);
       setArchivos(archivos.filter(a => a.id !== id));
+      setModalEliminar(null);
     } catch (err) {
       alert('Error al eliminar el archivo');
     }
@@ -191,7 +193,7 @@ export default function Multimedia() {
                           Ver
                         </a>
                         <button
-                          onClick={() => eliminarArchivo(a.id)}
+                          onClick={() => setModalEliminar(a.id)}
                           className="text-red-500 hover:underline text-sm font-medium"
                         >
                           Eliminar
@@ -205,6 +207,13 @@ export default function Multimedia() {
           </section>
         </section>
       </section>
+      {modalEliminar && (
+        <ModalConfirmacion
+          mensaje= "Esta accion eliminara el archivo permanentemente."
+          onConfirmar={() => eliminarArchivo(modalEliminar)}
+          onCancelar={() => setModalEliminar(null)}
+        />
+      )}
     </main>
   );
 }

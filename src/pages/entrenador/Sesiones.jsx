@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import api from '../../api/axios';
+import ModalConfirmacion from '../../components/ModalConfirmacion';
 
 export default function Sesiones() {
   const { equipo_id } = useParams();
@@ -12,6 +13,7 @@ export default function Sesiones() {
   const [sesionEditar, setSesionEditar] = useState(null);
   const [form, setForm] = useState({ tipo: 'entrenamiento', fecha: '', descripcion: '' });
   const navigate = useNavigate();
+  const [modalEliminar, setModalEliminar] = useState(null);
 
   useEffect(() => {
     cargarSesiones();
@@ -56,10 +58,10 @@ export default function Sesiones() {
   };
 
   const eliminarSesion = async (id) => {
-    if (!confirm('¿Seguro que quieres eliminar esta sesión?')) return;
     try {
       await api.delete(`/sesiones/${id}`);
       setSesiones(sesiones.filter(s => s.id !== id));
+      setModalEliminar(null);
     } catch (err) {
       alert('Error al eliminar la sesión');
     }
@@ -149,7 +151,7 @@ export default function Sesiones() {
                       <td className="px-6 py-4 text-gray-600">{s.descripcion || '—'}</td>
                       <td className="px-6 py-4 flex gap-3">
                         <button onClick={() => abrirEditar(s)} className="text-[#2222FF] hover:underline text-sm font-medium">Editar</button>
-                        <button onClick={() => eliminarSesion(s.id)} className="text-red-500 hover:underline text-sm font-medium">Eliminar</button>
+                        <button onClick={() => setModalEliminar(s.id)} className="text-red-500 hover:underline text-sm font-medium">Eliminar</button>
                       </td>
                     </tr>
                   ))}
@@ -172,7 +174,7 @@ export default function Sesiones() {
                   <p className="text-sm text-gray-600 mb-3">{s.descripcion || 'Sin descripción'}</p>
                   <footer className="flex gap-3 border-t border-gray-100 pt-3">
                     <button onClick={() => abrirEditar(s)} className="flex-1 text-center text-[#2222FF] text-sm font-medium">Editar</button>
-                    <button onClick={() => eliminarSesion(s.id)} className="flex-1 text-center text-red-500 text-sm font-medium">Eliminar</button>
+                    <button onClick={() => setModalEliminar(s.id)} className="flex-1 text-center text-red-500 text-sm font-medium">Eliminar</button>
                   </footer>
                 </article>
               ))}
@@ -210,6 +212,13 @@ export default function Sesiones() {
             </form>
           </article>
         </div>
+      )}
+      {modalEliminar && (
+        <ModalConfirmacion
+          mensaje= "Esta accion eliminara la sesion permanentemente."
+          onConfirmar={() => eliminarSesion(modalEliminar)}
+          onCancelar={() => setModalEliminar(null)}
+        />
       )}
     </main>
   );

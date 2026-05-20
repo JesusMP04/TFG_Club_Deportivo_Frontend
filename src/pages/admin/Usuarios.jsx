@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../api/axios';
+import ModalConfirmacion from '../../components/ModalConfirmacion';
 
 export default function Usuarios() {
   const [usuarios, setUsuarios] = useState([]);
@@ -8,6 +9,7 @@ export default function Usuarios() {
   const [error, setError] = useState('');
   const [usuarioEditar, setUsuarioEditar] = useState(null);
   const navigate = useNavigate();
+  const [modalEliminar, setModalEliminar] = useState(null);
 
   useEffect(() => {
     cargarUsuarios();
@@ -25,14 +27,14 @@ export default function Usuarios() {
   };
 
   const eliminarUsuario = async (id) => {
-    if (!confirm('¿Seguro que quieres eliminar este usuario?')) return;
-    try {
-      await api.delete(`/usuarios/${id}`);
-      setUsuarios(usuarios.filter(u => u.id !== id));
-    } catch (err) {
-      alert('Error al eliminar el usuario');
-    }
-  };
+  try {
+    await api.delete(`/usuarios/${id}`);
+    setUsuarios(usuarios.filter(u => u.id !== id));
+    setModalEliminar(null);
+  } catch (err) {
+    alert('Error al eliminar el usuario');
+  }
+};
 
   const guardarCambios = async () => {
     try {
@@ -101,7 +103,7 @@ export default function Usuarios() {
                       </td>
                       <td className="px-6 py-4 flex gap-3">
                         <button onClick={() => setUsuarioEditar({ ...u })} className="text-[#2222FF] hover:underline text-sm font-medium">Editar</button>
-                        <button onClick={() => eliminarUsuario(u.id)} className="text-red-500 hover:underline text-sm font-medium">Eliminar</button>
+                        <button onClick={() => setModalEliminar(u.id)} className="text-red-500 hover:underline text-sm font-medium">Eliminar</button>
                       </td>
                     </tr>
                   ))}
@@ -127,7 +129,7 @@ export default function Usuarios() {
                   <p className="text-sm text-gray-600 mb-3">{u.telefono || 'Sin teléfono'}</p>
                   <footer className="flex gap-3 border-t border-gray-100 pt-3">
                     <button onClick={() => setUsuarioEditar({ ...u })} className="flex-1 text-center text-[#2222FF] text-sm font-medium">Editar</button>
-                    <button onClick={() => eliminarUsuario(u.id)} className="flex-1 text-center text-red-500 text-sm font-medium">Eliminar</button>
+                    <button onClick={() => setModalEliminar(u.id)} className="flex-1 text-center text-red-500 text-sm font-medium">Eliminar</button>
                   </footer>
                 </article>
               ))}
@@ -206,6 +208,13 @@ export default function Usuarios() {
             </form>
           </article>
         </div>
+      )}
+      {modalEliminar && (
+        <ModalConfirmacion
+          mensaje="Esta acción eliminará el usuario permanentemente."
+          onConfirmar={() => eliminarUsuario(modalEliminar)}
+          onCancelar={() => setModalEliminar(null)}
+        />
       )}
     </main>
   );

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../api/axios';
+import ModalConfirmacion from '../../components/ModalConfirmacion';
 
 export default function Jugadores() {
   const [jugadores, setJugadores] = useState([]);
@@ -11,6 +12,8 @@ export default function Jugadores() {
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
   const [form, setForm] = useState({ nombre: '', apellidos: '', fecha_nac: '', equipo_id: '' });
   const navigate = useNavigate();
+  const [modalEliminar, setModalEliminar] = useState(null);
+
 
   useEffect(() => {
     cargarJugadores();
@@ -55,10 +58,10 @@ export default function Jugadores() {
   };
 
   const eliminarJugador = async (id) => {
-    if (!confirm('¿Seguro que quieres eliminar este jugador?')) return;
     try {
       await api.delete(`/jugadores/${id}`);
       setJugadores(jugadores.filter(j => j.id !== id));
+      setModalEliminar(null);
     } catch (err) {
       alert('Error al eliminar el jugador');
     }
@@ -134,7 +137,7 @@ export default function Jugadores() {
                       </td>
                       <td className="px-6 py-4 flex gap-3">
                         <button onClick={() => abrirEditar(j)} className="text-[#2222FF] hover:underline text-sm font-medium">Editar</button>
-                        <button onClick={() => eliminarJugador(j.id)} className="text-red-500 hover:underline text-sm font-medium">Eliminar</button>
+                        <button onClick={() => setModalEliminar(j.id)} className="text-red-500 hover:underline text-sm font-medium">Eliminar</button>
                       </td>
                     </tr>
                   ))}
@@ -154,7 +157,7 @@ export default function Jugadores() {
                   <p className="text-sm text-gray-600 mb-3">Equipo: {nombreEquipo(j.equipo_id)}</p>
                   <footer className="flex gap-3 border-t border-gray-100 pt-3">
                     <button onClick={() => abrirEditar(j)} className="flex-1 text-center text-[#2222FF] text-sm font-medium">Editar</button>
-                    <button onClick={() => eliminarJugador(j.id)} className="flex-1 text-center text-red-500 text-sm font-medium">Eliminar</button>
+                    <button onClick={() => setModalEliminar(j.id)} className="flex-1 text-center text-red-500 text-sm font-medium">Eliminar</button>
                   </footer>
                 </article>
               ))}
@@ -198,6 +201,13 @@ export default function Jugadores() {
             </form>
           </article>
         </div>
+      )}
+      {modalEliminar && (
+        <ModalConfirmacion
+          mensaje="Esta acción eliminará el jugador permanentemente."
+          onConfirmar={() => eliminarJugador(modalEliminar)}
+          onCancelar={() => setModalEliminar(null)}
+        />
       )}
     </main>
   );
