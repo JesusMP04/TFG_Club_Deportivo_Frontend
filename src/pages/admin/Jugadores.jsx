@@ -14,6 +14,7 @@ export default function Jugadores() {
   const [form, setForm] = useState({ nombre: '', apellidos: '', fecha_nac: '', equipo_id: '' });
   const navigate = useNavigate();
   const [modalEliminar, setModalEliminar] = useState(null);
+  const [busqueda, setBusqueda] = useState('');
 
 
   useEffect(() => {
@@ -84,6 +85,10 @@ export default function Jugadores() {
     return equipo ? equipo.nombre : '—';
   };
 
+  const jugadoresFiltrados = jugadores.filter(j =>
+    `${j.nombre} ${j.apellidos} ${nombreEquipo(j.equipo_id)}`.toLowerCase().includes(busqueda.toLowerCase())
+  );
+
   return (
     <main className="min-h-screen bg-gray-50">
       <nav className="bg-[#2222FF] text-white px-6 py-4 flex items-center justify-between">
@@ -102,6 +107,13 @@ export default function Jugadores() {
             <h2 className="text-2xl font-bold text-gray-800">Jugadores</h2>
             <p className="text-gray-500 mt-1">Gestiona los jugadores del club</p>
           </div>
+          <input
+            type="text"
+            value={busqueda}
+            onChange={(e) => setBusqueda(e.target.value)}
+            placeholder="Buscar por nombre, apellidos o equipo ..."
+            className="w-full md:w-80 border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#2222FF] mt-4"
+          />
           <button
             onClick={() => { setJugadorEditar(null); setForm({ nombre: '', apellidos: '', fecha_nac: '', equipo_id: '' }); setMostrarFormulario(true); }}
             className="bg-[#2222FF] text-white text-sm font-semibold px-5 py-2.5 rounded-lg hover:bg-blue-700 transition-colors"
@@ -128,7 +140,7 @@ export default function Jugadores() {
                   </tr>
                 </thead>
                 <tbody>
-                  {jugadores.map(j => (
+                  {jugadoresFiltrados.map(j => (
                     <tr key={j.id} className="border-b border-gray-100 hover:bg-gray-50">
                       <td className="px-6 py-4 font-medium text-gray-800">{j.nombre} {j.apellidos}</td>
                       <td className="px-6 py-4 text-gray-600">{j.fecha_nac?.split('T')[0] || '—'}</td>
@@ -148,7 +160,7 @@ export default function Jugadores() {
 
             {/* Tarjetas para móvil */}
             <section className="md:hidden flex flex-col gap-4">
-              {jugadores.map(j => (
+              {jugadoresFiltrados.map(j => (
                 <article key={j.id} className="bg-white rounded-2xl shadow-sm border border-gray-200 p-4">
                   <section className="flex items-center justify-between mb-2">
                     <h3 className="font-semibold text-gray-800">{j.nombre} {j.apellidos}</h3>

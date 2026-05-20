@@ -14,6 +14,8 @@ export default function Equipos() {
   const [form, setForm] = useState({ nombre: '', temporada: '', entrenador_id: '' });
   const navigate = useNavigate();
   const [modalEliminar, setModalEliminar] = useState(null);
+  const [busqueda, setBusqueda] = useState('');
+
 
 
   useEffect(() => {
@@ -74,6 +76,12 @@ export default function Equipos() {
     setMostrarFormulario(true);
   };
 
+  const equiposFiltrados = equipos.filter(e =>{
+    const entrenador = entrenadores.find(u => u.id === e.entrenador_id);
+    const nombreEntrenador = entrenador ? `${entrenador.nombre} ${entrenador.apellidos}` : '';
+    return `${e.nombre} ${e.temporada} ${nombreEntrenador}`.toLowerCase().includes(busqueda.toLowerCase())
+  });
+
   return (
     <main className="min-h-screen bg-gray-50">
       <nav className="bg-[#2222FF] text-white px-6 py-4 flex items-center justify-between">
@@ -92,12 +100,20 @@ export default function Equipos() {
             <h2 className="text-2xl font-bold text-gray-800">Equipos</h2>
             <p className="text-gray-500 mt-1">Gestiona los equipos del club</p>
           </div>
+          <input
+            type="text"
+            value={busqueda}
+            onChange={(e) => setBusqueda(e.target.value)}
+            placeholder="Buscar por nombre, temporada o entrenador..."
+            className="w-full md:w-80 border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#2222FF] mt-4"
+          />
           <button
             onClick={() => { setEquipoEditar(null); setForm({ nombre: '', temporada: '', entrenador_id: '' }); setMostrarFormulario(true); }}
             className="bg-[#2222FF] text-white text-sm font-semibold px-5 py-2.5 rounded-lg hover:bg-blue-700 transition-colors"
           >
             + Nuevo equipo
           </button>
+          
         </header>
 
         {cargando && <Spinner />}
@@ -117,7 +133,7 @@ export default function Equipos() {
                   </tr>
                 </thead>
                 <tbody>
-                  {equipos.map(e => (
+                  {equiposFiltrados.map(e => (
                     <tr key={e.id} className="border-b border-gray-100 hover:bg-gray-50">
                       <td className="px-6 py-4 font-medium text-gray-800">{e.nombre}</td>
                       <td className="px-6 py-4 text-gray-600">{e.temporada}</td>
@@ -139,7 +155,7 @@ export default function Equipos() {
 
             {/* Tarjetas para móvil */}
             <section className="md:hidden flex flex-col gap-4">
-              {equipos.map(e => (
+              {equiposFiltrados.map(e => (
                 <article key={e.id} className="bg-white rounded-2xl shadow-sm border border-gray-200 p-4">
                   <section className="flex items-center justify-between mb-2">
                     <h3 className="font-semibold text-gray-800">{e.nombre}</h3>

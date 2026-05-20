@@ -11,6 +11,7 @@ export default function Usuarios() {
   const [usuarioEditar, setUsuarioEditar] = useState(null);
   const navigate = useNavigate();
   const [modalEliminar, setModalEliminar] = useState(null);
+  const [busqueda, setBusqueda] = useState('');
 
   useEffect(() => {
     cargarUsuarios();
@@ -52,6 +53,10 @@ export default function Usuarios() {
     }
   };
 
+  const usuariosFiltrados = usuarios.filter(u =>
+    `${u.nombre} ${u.apellidos} ${u.email} ${u.rol}`.toLowerCase().includes(busqueda.toLowerCase())
+  );
+
   return (
     <main className="min-h-screen bg-gray-50">
       <nav className="bg-[#2222FF] text-white px-6 py-4 flex items-center justify-between">
@@ -68,6 +73,13 @@ export default function Usuarios() {
         <header className="mb-8">
           <h2 className="text-2xl font-bold text-gray-800">Usuarios</h2>
           <p className="text-gray-500 mt-1">Gestiona los usuarios del sistema</p>
+          <input
+            type="text"
+            value={busqueda}
+            onChange={(e) => setBusqueda(e.target.value)}
+            placeholder="Buscar por nombre, email o rol..."
+            className="w-full md:w-80 border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#2222FF] mt-4"
+          />
         </header>
 
         {cargando && <Spinner />}
@@ -88,7 +100,7 @@ export default function Usuarios() {
                   </tr>
                 </thead>
                 <tbody>
-                  {usuarios.map(u => (
+                  {usuariosFiltrados.map(u => (
                     <tr key={u.id} className="border-b border-gray-100 hover:bg-gray-50">
                       <td className="px-6 py-4 font-medium text-gray-800">{u.nombre} {u.apellidos}</td>
                       <td className="px-6 py-4 text-gray-600">{u.email}</td>
@@ -114,7 +126,7 @@ export default function Usuarios() {
 
             {/* Tarjetas para móvil */}
             <section className="md:hidden flex flex-col gap-4">
-              {usuarios.map(u => (
+              {usuariosFiltrados.map(u => (
                 <article key={u.id} className="bg-white rounded-2xl shadow-sm border border-gray-200 p-4">
                   <section className="flex items-center justify-between mb-3">
                     <h3 className="font-semibold text-gray-800">{u.nombre} {u.apellidos}</h3>
