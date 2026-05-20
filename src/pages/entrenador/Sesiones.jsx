@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import api from '../../api/axios';
 import ModalConfirmacion from '../../components/ModalConfirmacion';
+import Spinner from '../../components/Spinner';
 
 export default function Sesiones() {
   const { equipo_id } = useParams();
@@ -119,7 +120,7 @@ export default function Sesiones() {
           </section>
         </header>
 
-        {cargando && <p className="text-gray-500">Cargando...</p>}
+        {cargando && <Spinner />}
         {error && <p className="text-red-500">{error}</p>}
 
         {!cargando && !error && (

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import api from '../../api/axios';
+import Spinner from '../../components/Spinner';
 
 export default function Equipos() {
   const [equipos, setEquipos] = useState([]);
@@ -45,7 +46,7 @@ export default function Equipos() {
           <p className="text-gray-500 mt-1">Equipos asignados a tu cuenta</p>
         </header>
 
-        {cargando && <p className="text-gray-500">Cargando...</p>}
+        {cargando && <Spinner />}
         {error && <p className="text-red-500">{error}</p>}
 
         {!cargando && !error && equipos.length === 0 && (

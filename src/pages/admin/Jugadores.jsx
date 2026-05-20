@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../api/axios';
 import ModalConfirmacion from '../../components/ModalConfirmacion';
+import Spinner from '../../components/Spinner';
 
 export default function Jugadores() {
   const [jugadores, setJugadores] = useState([]);
@@ -109,7 +110,7 @@ export default function Jugadores() {
           </button>
         </header>
 
-        {cargando && <p className="text-gray-500">Cargando...</p>}
+        {cargando && <Spinner />}
         {error && <p className="text-red-500">{error}</p>}
 
         {!cargando && !error && (

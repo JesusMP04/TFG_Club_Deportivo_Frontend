@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import api from '../../api/axios';
 import ModalConfirmacion from '../../components/ModalConfirmacion';
+import Spinner from '../../components/Spinner';
 
 export default function Multimedia() {
   const { equipo_id } = useParams();
@@ -99,7 +100,7 @@ export default function Multimedia() {
           {/* Lista de sesiones */}
           <aside className="bg-white rounded-2xl shadow-sm border border-gray-200 p-4">
             <h3 className="font-semibold text-gray-700 mb-3 text-sm">Sesiones</h3>
-            {cargando && <p className="text-gray-400 text-sm">Cargando...</p>}
+            {cargando && <Spinner />}
             {sesiones.map(s => (
               <button
                 key={s.id}

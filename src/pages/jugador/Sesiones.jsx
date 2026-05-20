@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../api/axios';
+import Spinner from '../../components/Spinner';
 
 export default function Sesiones() {
   const [sesiones, setSesiones] = useState([]);
@@ -72,7 +73,7 @@ export default function Sesiones() {
           </article>
         )}
 
-        {cargando && <p className="text-gray-500">Cargando...</p>}
+        {cargando && <Spinner />}
 
         {!cargando && !equipo?.equipo_id && (
           <p className="text-gray-400">No tienes equipo asignado todavía.</p>

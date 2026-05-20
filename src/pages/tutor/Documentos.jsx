@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import api from '../../api/axios';
+import Spinner from '../../components/Spinner';
 
 export default function Documentos() {
   const [documentos, setDocumentos] = useState([]);
@@ -107,7 +108,7 @@ export default function Documentos() {
         {/* Lista de documentos */}
         <article className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
           <h3 className="font-semibold text-gray-700 mb-4">Mis documentos</h3>
-          {cargando && <p className="text-gray-400 text-sm">Cargando...</p>}
+          {cargando && <Spinner />}
           {!cargando && documentos.length === 0 && (
             <p className="text-gray-400 text-sm">No has subido ningún documento todavía</p>
           )}

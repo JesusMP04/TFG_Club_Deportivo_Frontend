@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../api/axios';
+import Spinner from '../../components/Spinner';
 
 export default function Hijos() {
   const [hijos, setHijos] = useState([]);
@@ -41,7 +42,7 @@ export default function Hijos() {
           <p className="text-gray-500 mt-1">Jugadores vinculados a tu cuenta</p>
         </header>
 
-        {cargando && <p className="text-gray-500">Cargando...</p>}
+        {cargando && <Spinner />}
         {error && <p className="text-red-500">{error}</p>}
 
         {!cargando && !error && hijos.length === 0 && (

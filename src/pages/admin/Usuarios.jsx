@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../api/axios';
 import ModalConfirmacion from '../../components/ModalConfirmacion';
+import Spinner from '../../components/Spinner';
 
 export default function Usuarios() {
   const [usuarios, setUsuarios] = useState([]);
@@ -69,7 +70,7 @@ export default function Usuarios() {
           <p className="text-gray-500 mt-1">Gestiona los usuarios del sistema</p>
         </header>
 
-        {cargando && <p className="text-gray-500">Cargando...</p>}
+        {cargando && <Spinner />}
         {error && <p className="text-red-500">{error}</p>}
 
         {!cargando && !error && (

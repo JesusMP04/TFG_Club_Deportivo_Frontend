@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import api from '../../api/axios';
+import Spinner from '../../components/Spinner';
 
 export default function Chat() {
   const [mensajes, setMensajes] = useState([]);
@@ -87,7 +88,7 @@ export default function Chat() {
 
         {/* Mensajes */}
         <section className="flex-1 bg-white rounded-2xl shadow-sm border border-gray-200 p-6 overflow-y-auto mb-4 min-h-96">
-          {cargando && <p className="text-gray-400 text-center">Cargando mensajes...</p>}
+          {cargando && <Spinner />}
           {!cargando && mensajes.length === 0 && (
             <p className="text-gray-400 text-center">No hay mensajes aún. ¡Sé el primero!</p>
           )}
