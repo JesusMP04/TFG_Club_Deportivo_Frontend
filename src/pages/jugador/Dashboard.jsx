@@ -6,7 +6,7 @@ import api from '../../api/axios';
 export default function Dashboard() {
   const { usuario, logout } = useAuth();
   const navigate = useNavigate();
-  const [equipo, setEquipo] = useState(null);
+  const [perfil, setPerfil] = useState(null);
 
   useEffect(() => {
     cargarPerfil();
@@ -15,10 +15,19 @@ export default function Dashboard() {
   const cargarPerfil = async () => {
     try {
       const res = await api.get('/jugadores/mi-perfil');
-      setEquipo(res.data.jugador);
+      setPerfil(res.data.jugador);
     } catch (err) {
       console.error('Error al cargar perfil');
     }
+  };
+
+  const calcularEdad = (fecha_nac) => {
+    const hoy = new Date();
+    const nacimiento = new Date(fecha_nac);
+    let edad = hoy.getFullYear() - nacimiento.getFullYear();
+    const mes = hoy.getMonth() - nacimiento.getMonth();
+    if (mes < 0 || (mes === 0 && hoy.getDate() < nacimiento.getDate())) edad--;
+    return edad;
   };
 
   const handleLogout = () => {
@@ -63,13 +72,24 @@ export default function Dashboard() {
             <p className="text-gray-500 text-sm mt-1">Ver el calendario de sesiones</p>
           </article>
 
+          {perfil && calcularEdad(perfil.fecha_nac) >= 14 && (
+            <article
+              onClick={() => navigate('/jugador/documentos')}
+              className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 cursor-pointer hover:shadow-md hover:border-[#2222FF] transition-all"
+            >
+              <span className="text-4xl">📄</span>
+              <h3 className="text-lg font-semibold text-gray-800 mt-3">Mis Documentos</h3>
+              <p className="text-gray-500 text-sm mt-1">Sube tu DNI y reconocimiento médico</p>
+            </article>
+          )}
+
           <article
-            onClick={() => equipo?.equipo_nombre
-              ? navigate(`/jugador/chat/${encodeURIComponent(equipo.equipo_nombre)}`)
+            onClick={() => perfil?.equipo_nombre
+              ? navigate(`/jugador/chat/${encodeURIComponent(perfil.equipo_nombre)}`)
               : null
             }
             className={`bg-white rounded-2xl shadow-sm border border-gray-200 p-6 transition-all ${
-              equipo?.equipo_nombre
+              perfil?.equipo_nombre
                 ? 'cursor-pointer hover:shadow-md hover:border-[#2222FF]'
                 : 'opacity-50 cursor-not-allowed'
             }`}
@@ -77,7 +97,7 @@ export default function Dashboard() {
             <span className="text-4xl">💬</span>
             <h3 className="text-lg font-semibold text-gray-800 mt-3">Chat de Equipo</h3>
             <p className="text-gray-500 text-sm mt-1">
-              {equipo?.equipo_nombre ? equipo.equipo_nombre : 'Sin equipo asignado'}
+              {perfil?.equipo_nombre ? perfil.equipo_nombre : 'Sin equipo asignado'}
             </p>
           </article>
 

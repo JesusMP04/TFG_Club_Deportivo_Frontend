@@ -23,8 +23,10 @@ import TutorDocumentos from './pages/tutor/Documentos';
 import TutorChat from './pages/entrenador/Chat';
 import JugadorDashboard from './pages/jugador/Dashboard';
 import JugadorSesiones from './pages/jugador/Sesiones';
+import JugadorDocumentos from './pages/jugador/Documentos';
 import Perfil from './pages/Perfil';
 import NotFound from './pages/NotFound';
+
 
 
 
@@ -67,6 +69,7 @@ function App() {
           <Route path="/jugador/sesiones" element={<RutaProtegida roles={['jugador']}><JugadorSesiones /></RutaProtegida>} />
           <Route path="/jugador/sesiones" element={<RutaProtegida roles={['jugador']}><JugadorSesiones /></RutaProtegida>} />
           <Route path="/jugador/chat/:sala_id" element={<RutaProtegida roles={['jugador']}><EntrenadorChat /></RutaProtegida>} />
+          <Route path="/jugador/documentos" element={<RutaProtegida roles={['jugador']}><JugadorDocumentos /></RutaProtegida>} />
           <Route path="/perfil" element={<RutaProtegida roles={['admin', 'entrenador', 'tutor', 'jugador']}><Perfil /></RutaProtegida>} />
 
           <Route path="/register" element={<Register />} />

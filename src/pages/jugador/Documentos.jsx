@@ -10,13 +10,23 @@ export default function Documentos() {
   const [subiendo, setSubiendo] = useState(false);
   const [titulo, setTitulo] = useState('');
   const [archivo, setArchivo] = useState(null);
-  const [nombreHijo, setNombreHijo] = useState('');
+  const [perfil, setPerfil] = useState(null);
   const { usuario } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
     cargarDocumentos();
+    cargarPerfil();
   }, []);
+
+  const cargarPerfil = async () => {
+    try {
+        const res = await api.get('/jugadores/mi-perfil');
+        setPerfil(res.data.jugador);
+    } catch (err) {
+        console.error('Error al cargar perfil');
+    }
+  };
 
   const cargarDocumentos = async () => {
     try {
@@ -55,7 +65,7 @@ export default function Documentos() {
       <nav className="bg-[#2222FF] text-white px-6 py-4 flex items-center justify-between">
         <h1 className="text-xl font-bold">⚽ Club Deportivo</h1>
         <button
-          onClick={() => navigate('/tutor/dashboard')}
+          onClick={() => navigate('/jugador/dashboard')}
           className="bg-white text-[#2222FF] text-sm font-semibold px-4 py-1.5 rounded-lg hover:bg-gray-100 transition-colors"
         >
           ← Volver
@@ -64,25 +74,13 @@ export default function Documentos() {
 
       <section className="p-8 max-w-2xl mx-auto">
         <header className="mb-8">
-          <h2 className="text-2xl font-bold text-gray-800">Documentos</h2>
-          <p className="text-gray-500 mt-1">Sube el DNI y reconocimiento médico de tu hijo/a</p>
+          <h2 className="text-2xl font-bold text-gray-800">Mis Documentos</h2>
+          <p className="text-gray-500 mt-1">Sube tu DNI y reconocimiento médico</p>
         </header>
 
-        {/* Formulario subida */}
         <article className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 mb-6">
           <h3 className="font-semibold text-gray-700 mb-4">Subir documento</h3>
           <form onSubmit={subirDocumento} className="flex flex-col gap-4">
-            <label className="text-sm font-medium text-gray-700">
-              Nombre del hijo/a
-              <input
-                type="text"
-                value={nombreHijo}
-                onChange={(e) => setNombreHijo(e.target.value)}
-                required
-                className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm mt-1 focus:outline-none focus:ring-2 focus:ring-[#2222FF]"
-                placeholder="Nombre completo del hijo/a"
-              />
-            </label>
             <label className="text-sm font-medium text-gray-700">
               Tipo de documento
               <select
@@ -92,20 +90,28 @@ export default function Documentos() {
                 className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm mt-1 focus:outline-none focus:ring-2 focus:ring-[#2222FF]"
               >
                 <option value="">Selecciona un tipo</option>
-                <option value={`DNI Frontal - ${nombreHijo}`}>DNI Frontal</option>
-                <option value={`DNI Trasero - ${nombreHijo}`}>DNI Trasero</option>
-                <option value={`Reconocimiento Médico - ${nombreHijo}`}>Reconocimiento Médico</option>
+                <option value={`DNI Frontal - ${perfil?.nombre} ${perfil?.apellidos}`}>DNI Frontal</option>
+                <option value={`DNI Trasero - ${perfil?.nombre} ${perfil?.apellidos}`}>DNI Trasero</option>
+                <option value={`Reconocimiento Médico - ${perfil?.nombre} ${perfil?.apellidos}`}>Reconocimiento Médico</option>
               </select>
             </label>
             <label className="text-sm font-medium text-gray-700">
               Archivo (imagen o PDF)
-              <input
-                type="file"
-                accept="image/*,.pdf"
-                onChange={(e) => setArchivo(e.target.files[0])}
-                required
-                className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm mt-1 focus:outline-none"
-              />
+              <section className="mt-1">
+                <label className="w-full flex items-center gap-3 border border-gray-300 rounded-lg px-4 py-2.5 cursor-pointer hover:border-[#2222FF] transition-colors">
+                  <span className="text-[#2222FF] text-sm font-semibold whitespace-nowrap">Seleccionar archivo</span>
+                  <span className="text-sm text-gray-500 truncate">
+                    {archivo ? archivo.name : 'Ningún archivo seleccionado'}
+                  </span>
+                  <input
+                    type="file"
+                    accept="image/*,.pdf"
+                    onChange={(e) => setArchivo(e.target.files[0])}
+                    required
+                    className="hidden"
+                  />
+                </label>
+              </section>
             </label>
             <button
               type="submit"
@@ -117,7 +123,6 @@ export default function Documentos() {
           </form>
         </article>
 
-        {/* Lista de documentos */}
         <article className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
           <h3 className="font-semibold text-gray-700 mb-4">Mis documentos</h3>
           {cargando && <Spinner />}

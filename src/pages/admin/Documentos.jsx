@@ -10,6 +10,12 @@ export default function Documentos() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const [modalEliminar, setModalEliminar] = useState(null);
+  const [busqueda, setBusqueda] = useState('');
+
+
+  const documentosFiltrados = documentos.filter(d =>
+    d.titulo.toLowerCase().includes(busqueda.toLowerCase())
+  );
 
   useEffect(() => {
     cargarDocumentos();
@@ -52,6 +58,13 @@ export default function Documentos() {
         <header className="mb-8">
           <h2 className="text-2xl font-bold text-gray-800">Documentos pendientes</h2>
           <p className="text-gray-500 mt-1">Revisa los documentos enviados por los usuarios</p>
+          <input
+            type="text"
+            value={busqueda}
+            onChange={(e) => setBusqueda(e.target.value)}
+            placeholder="Buscar por nombre o tipo de documento..."
+            className="w-full md:w-80 border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#2222FF] mt-4"
+          />
         </header>
 
         {cargando && <Spinner />}
@@ -76,7 +89,7 @@ export default function Documentos() {
                     <tr>
                       <td colSpan={5} className="px-6 py-8 text-center text-gray-400">No hay documentos pendientes</td>
                     </tr>
-                  ) : documentos.map(d => (
+                  ) : documentosFiltrados.map(d => (
                     <tr key={d.id} className="border-b border-gray-100 hover:bg-gray-50">
                       <td className="px-6 py-4 font-medium text-gray-800">{d.titulo}</td>
                       <td className="px-6 py-4 text-gray-600">{d.usuario_id}</td>
@@ -98,7 +111,7 @@ export default function Documentos() {
             <section className="md:hidden flex flex-col gap-4">
               {documentos.length === 0 ? (
                 <p className="text-center text-gray-400">No hay documentos pendientes</p>
-              ) : documentos.map(d => (
+              ) : documentosFiltrados.map(d => (
                 <article key={d.id} className="bg-white rounded-2xl shadow-sm border border-gray-200 p-4">
                   <section className="flex items-center justify-between mb-2">
                     <h3 className="font-semibold text-gray-800">{d.titulo}</h3>
