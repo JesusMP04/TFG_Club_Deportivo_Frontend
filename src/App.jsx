@@ -24,6 +24,7 @@ import TutorChat from './pages/entrenador/Chat';
 import JugadorDashboard from './pages/jugador/Dashboard';
 import JugadorSesiones from './pages/jugador/Sesiones';
 import Perfil from './pages/Perfil';
+import NotFound from './pages/NotFound';
 
 
 
@@ -70,7 +71,7 @@ function App() {
 
           <Route path="/register" element={<Register />} />
           <Route path="/vincular" element={<Vincular/>} />
-          <Route path="*" element={<Navigate to="/login" />} />
+          <Route path="*" element={<NotFound/>} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
