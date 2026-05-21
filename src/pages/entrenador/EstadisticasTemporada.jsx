@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import api from '../../api/axios';
 import Spinner from '../../components/Spinner';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 export default function EstadisticasTemporada() {
   const { equipo_id } = useParams();
@@ -24,6 +26,50 @@ export default function EstadisticasTemporada() {
     }
   };
 
+  const exportarCSV = () => {
+    const cabeceras = ['Jugador', 'Goles', 'Partidos', 'Goles/Partido', 'Amarillas', 'Rojas'];
+    const filas = estadisticas.map(e => [
+        `${e.nombre} ${e.apellidos}`,
+        e.total_goles,
+        e.partidos_jugados,
+        e.partidos_jugados > 0 ? (e.total_goles / e.partidos_jugados).toFixed(2) : '0.00',
+        e.total_amarillas,
+        e.total_rojas
+    ]);
+
+    const contenido = [cabeceras, ...filas].map(fila => fila.join(';')).join('\n');
+    const blob = new Blob([contenido], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'estadisticas_temporada.csv';
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+
+    const exportarPDF = () => {
+        const doc = new jsPDF();
+        doc.setFontSize(16);
+        doc.text('Estadísticas de Temporada', 14, 15);
+
+        autoTable(doc, {
+            startY: 25,
+            head: [['Jugador', 'Goles', 'Partidos', 'Goles/Partido', 'Amarillas', 'Rojas']],
+            body: estadisticas.map(e => [
+            `${e.nombre} ${e.apellidos}`,
+            e.total_goles,
+            e.partidos_jugados,
+            e.partidos_jugados > 0 ? (e.total_goles / e.partidos_jugados).toFixed(2) : '0.00',
+            e.total_amarillas,
+            e.total_rojas
+            ]),
+            styles: { fontSize: 10 },
+            headStyles: { fillColor: [34, 34, 255] }
+        });
+
+        doc.save('estadisticas_temporada.pdf');
+    };
+
   return (
     <main className="min-h-screen bg-gray-50">
       <nav className="bg-[#2222FF] text-white px-4 py-3 flex items-center justify-between">
@@ -37,9 +83,25 @@ export default function EstadisticasTemporada() {
       </nav>
 
       <section className="p-8">
-        <header className="mb-8">
-          <h2 className="text-2xl font-bold text-gray-800">Estadísticas de temporada</h2>
-          <p className="text-gray-500 mt-1">Rendimiento de todos los jugadores del equipo</p>
+        <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8 gap-4">
+            <div>
+                <h2 className="text-2xl font-bold text-gray-800">Estadísticas de temporada</h2>
+                <p className="text-gray-500 mt-1">Rendimiento de todos los jugadores del equipo</p>
+            </div>
+            <section className="flex gap-3">
+                <button
+                onClick={exportarCSV}
+                className="bg-green-600 hover:bg-green-700 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
+                >
+                📥 Exportar CSV
+                </button>
+                <button
+                onClick={exportarPDF}
+                className="bg-red-500 hover:bg-red-600 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
+                >
+                📄 Exportar PDF
+                </button>
+            </section>
         </header>
 
         {cargando && <Spinner />}
