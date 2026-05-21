@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { Toaster } from 'react-hot-toast';
 import Login from './pages/Login';
 import Dashboard from './pages/admin/Dashboard';
 import Usuarios from './pages/admin/Usuarios';
@@ -45,6 +46,7 @@ const RutaProtegida = ({ children, roles }) => {
 function App() {
   return (
     <AuthProvider>
+      <Toaster position="top-center" />
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<Login />} />

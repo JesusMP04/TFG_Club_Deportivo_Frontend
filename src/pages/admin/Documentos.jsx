@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import api from '../../api/axios';
 import ModalConfirmacion from '../../components/ModalConfirmacion';
 import Spinner from '../../components/Spinner';
+import toast from 'react-hot-toast';
 
 export default function Documentos() {
   const [documentos, setDocumentos] = useState([]);
@@ -37,8 +38,9 @@ export default function Documentos() {
       await api.delete(`/documentos/${id}`);
       setDocumentos(documentos.filter(d => d.id !== id));
       setModalEliminar(null);
+      toast.success("Documento eliminado correctamente");
     } catch (err) {
-      alert('Error al eliminar el documento');
+      toast.error('Error al eliminar el documento');
     }
   };
 

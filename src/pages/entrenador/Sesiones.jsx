@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import api from '../../api/axios';
 import ModalConfirmacion from '../../components/ModalConfirmacion';
 import Spinner from '../../components/Spinner';
+import toast from 'react-hot-toast';
 
 export default function Sesiones() {
   const { equipo_id } = useParams();
@@ -42,8 +43,9 @@ export default function Sesiones() {
       setMostrarFormulario(false);
       setSesionEditar(null);
       setForm({ tipo: 'entrenamiento', fecha: '', descripcion: '' });
+      toast.success("Sesion guardada correctamente");
     } catch (err) {
-      alert('Error al guardar la sesión');
+      toast.error('Error al guardar la sesión');
     }
   };
 
@@ -52,8 +54,9 @@ export default function Sesiones() {
       await api.delete(`/sesiones/${id}`);
       setSesiones(sesiones.filter(s => s.id !== id));
       setModalEliminar(null);
+      toast.success("Sesion eliminada correctamente");
     } catch (err) {
-      alert('Error al eliminar la sesión');
+      toast.error('Error al eliminar la sesión');
     }
   };
 

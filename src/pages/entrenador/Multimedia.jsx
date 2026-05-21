@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import api from '../../api/axios';
 import ModalConfirmacion from '../../components/ModalConfirmacion';
 import Spinner from '../../components/Spinner';
+import toast from 'react-hot-toast';
 
 export default function Multimedia() {
   const { equipo_id } = useParams();
@@ -60,8 +61,9 @@ export default function Multimedia() {
       setTitulo('');
       setArchivo(null);
       await cargarArchivos(sesionSeleccionada.id);
+      toast.success("Archivo subido correctamente");
     } catch (err) {
-      alert('Error al subir el archivo');
+      toast.error('Error al subir el archivo');
     } finally {
       setSubiendo(false);
     }
@@ -72,8 +74,9 @@ export default function Multimedia() {
       await api.delete(`/multimedia/${id}`);
       setArchivos(archivos.filter(a => a.id !== id));
       setModalEliminar(null);
+      toast.success("Archivo eliminado correctamente");
     } catch (err) {
-      alert('Error al eliminar el archivo');
+      toast.error('Error al eliminar el archivo');
     }
   };
 

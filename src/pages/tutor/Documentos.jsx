@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import api from '../../api/axios';
 import Spinner from '../../components/Spinner';
+import toast from 'react-hot-toast';
 
 export default function Documentos() {
   const [documentos, setDocumentos] = useState([]);
@@ -43,8 +44,9 @@ export default function Documentos() {
       setTitulo('');
       setArchivo(null);
       await cargarDocumentos();
+      toast.success("Documento subido correctamente");
     } catch (err) {
-      alert('Error al subir el documento');
+      toast.error('Error al subir el documento');
     } finally {
       setSubiendo(false);
     }

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../api/axios';
+import toast from 'react-hot-toast';
 
 export default function Perfil() {
   const { usuario, login } = useAuth();
@@ -9,8 +10,6 @@ export default function Perfil() {
   const [editando, setEditando] = useState(false);
   const [datosCompletos, setDatosCompletos] = useState(null);
   const [form, setForm] = useState({ nombre: '', apellidos: '', email: '', telefono: '' });
-  const [exito, setExito] = useState('');
-  const [error, setError] = useState('');
   const [cargando, setCargando] = useState(false);
 
   useEffect(() => {
@@ -36,18 +35,16 @@ export default function Perfil() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setCargando(true);
-    setExito('');
-    setError('');
 
     try {
       const res = await api.patch(`/usuarios/${usuario.id}`, form);
       const token = localStorage.getItem('token');
       login(token, { ...usuario, ...res.data.usuario });
       setDatosCompletos(res.data.usuario);
-      setExito('Perfil actualizado correctamente');
       setEditando(false);
+      toast.success('Perfil actualizado correctamente');
     } catch (err) {
-      setError('Error al actualizar el perfil');
+      toast.error('Error al actualizar el perfil');
     } finally {
       setCargando(false);
     }
@@ -77,17 +74,6 @@ export default function Perfil() {
         </header>
 
         <article className="bg-white border border-gray-200 rounded-2xl shadow-lg p-8">
-          {exito && (
-            <p className="bg-green-50 border border-green-200 text-green-600 rounded-lg px-4 py-3 mb-6 text-sm">
-              {exito}
-            </p>
-          )}
-          {error && (
-            <p role="alert" className="bg-red-50 border border-red-200 text-red-600 rounded-lg px-4 py-3 mb-6 text-sm">
-              {error}
-            </p>
-          )}
-
           {!editando ? (
             <section>
               <section className="mb-4">
@@ -172,7 +158,7 @@ export default function Perfil() {
                 </button>
                 <button
                   type="button"
-                  onClick={() => { setEditando(false); setError(''); setExito(''); }}
+                  onClick={() => { setEditando(false);}}
                   className="flex-1 bg-gray-100 text-gray-700 font-semibold py-2.5 rounded-lg hover:bg-gray-200 transition-colors"
                 >
                   Cancelar

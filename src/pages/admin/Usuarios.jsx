@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import api from '../../api/axios';
 import ModalConfirmacion from '../../components/ModalConfirmacion';
 import Spinner from '../../components/Spinner';
+import toast from 'react-hot-toast';
 
 export default function Usuarios() {
   const [usuarios, setUsuarios] = useState([]);
@@ -33,8 +34,9 @@ export default function Usuarios() {
     await api.delete(`/usuarios/${id}`);
     setUsuarios(usuarios.filter(u => u.id !== id));
     setModalEliminar(null);
+    toast.success("Usuario eliminado correctamente");
   } catch (err) {
-    alert('Error al eliminar el usuario');
+    toast.error('Error al eliminar el usuario');
   }
 };
 
@@ -48,8 +50,9 @@ export default function Usuarios() {
       });
       await cargarUsuarios();
       setUsuarioEditar(null);
+      toast.success("Usuario modificado correctamente");
     } catch (err) {
-      alert('Error al actualizar el usuario');
+      toast.error('Error al eliminar el usuario');
     }
   };
 

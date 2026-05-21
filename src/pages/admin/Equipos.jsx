@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import api from '../../api/axios';
 import ModalConfirmacion from '../../components/ModalConfirmacion';
 import Spinner from '../../components/Spinner';
+import toast from 'react-hot-toast';
 
 export default function Equipos() {
   const [equipos, setEquipos] = useState([]);
@@ -55,8 +56,9 @@ export default function Equipos() {
       setMostrarFormulario(false);
       setEquipoEditar(null);
       setForm({ nombre: '', temporada: '', entrenador_id: '' });
+      toast.success("Equipo guardado correctamente");
     } catch (err) {
-      alert('Error al guardar el equipo');
+      toast.error('Error al guardar el equipo');
     }
   };
 
@@ -65,8 +67,9 @@ export default function Equipos() {
       await api.delete(`/equipos/${id}`);
       setEquipos(equipos.filter(e => e.id !== id));
       setModalEliminar(null);
+      toast.success("Equipo eliminado correctamente");
     } catch (err) {
-      alert('Error al eliminar el equipo');
+      toast.error('Error al eliminar el equipo');
     }
   };
 

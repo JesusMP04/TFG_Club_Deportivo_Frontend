@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import api from '../../api/axios';
 import ModalConfirmacion from '../../components/ModalConfirmacion';
 import Spinner from '../../components/Spinner';
+import toast from 'react-hot-toast';
 
 export default function Jugadores() {
   const [jugadores, setJugadores] = useState([]);
@@ -54,8 +55,9 @@ export default function Jugadores() {
       setMostrarFormulario(false);
       setJugadorEditar(null);
       setForm({ nombre: '', apellidos: '', fecha_nac: '', equipo_id: '' });
+      toast.success("Jugador guardado correctamente");
     } catch (err) {
-      alert('Error al guardar el jugador');
+      toast.error('Error al guardar el jugador');
     }
   };
 
@@ -64,8 +66,9 @@ export default function Jugadores() {
       await api.delete(`/jugadores/${id}`);
       setJugadores(jugadores.filter(j => j.id !== id));
       setModalEliminar(null);
+      toast.success("Jugador eliminado correcctamente");
     } catch (err) {
-      alert('Error al eliminar el jugador');
+      toast.error('Error al eliminar el jugador');
     }
   };
 
