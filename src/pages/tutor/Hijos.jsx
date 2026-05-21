@@ -73,6 +73,12 @@ export default function Hijos() {
                         >
                         💬 Chat del equipo
                         </button>
+                        <button
+                          onClick={() => navigate(`/tutor/estadisticas/${h.id}`)}
+                          className="w-full bg-gray-100 text-gray-700 text-sm font-semibold py-2 rounded-lg hover:bg-gray-200 transition-colors"
+                        >
+                          📊 Estadísticas
+                        </button>
                     </section>
                 )}
                 {!h.equipo_id && (

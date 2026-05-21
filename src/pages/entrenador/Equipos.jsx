@@ -63,20 +63,26 @@ export default function Equipos() {
                 <span className="text-4xl">🏆</span>
                 <h3 className="text-lg font-semibold text-gray-800 mt-3">{e.nombre}</h3>
                 <p className="text-gray-500 text-sm mt-1">Temporada {e.temporada}</p>
-                <section className="flex gap-2 mt-4">
-                  <button
-                    onClick={() => navigate(`/entrenador/equipos/${e.id}/sesiones`)}
-                    className="flex-1 bg-[#2222FF] text-white text-sm font-semibold py-2 rounded-lg hover:bg-blue-700 transition-colors"
-                  >
-                    Sesiones
-                  </button>
-                  <button
-                    onClick={() => navigate(`/entrenador/chat/${encodeURIComponent(e.nombre)}`)}
-                    className="flex-1 bg-gray-100 text-gray-700 text-sm font-semibold py-2 rounded-lg hover:bg-gray-200 transition-colors"
-                  >
-                    Chat equipo
-                  </button>
-                </section>
+                <section className="flex flex-col gap-2 mt-4">
+                <button
+                  onClick={() => navigate(`/entrenador/equipos/${e.id}/sesiones`)}
+                  className="w-full bg-[#2222FF] text-white text-sm font-semibold py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                >
+                  📅 Sesiones
+                </button>
+                <button
+                  onClick={() => navigate(`/entrenador/chat/${encodeURIComponent(e.nombre)}`)}
+                  className="w-full bg-gray-100 text-gray-700 text-sm font-semibold py-2 rounded-lg hover:bg-gray-200 transition-colors"
+                >
+                  💬 Chat del equipo
+                </button>
+                <button
+                  onClick={() => navigate(`/entrenador/equipos/${e.id}/estadisticas`)}
+                  className="w-full bg-gray-100 text-gray-700 text-sm font-semibold py-2 rounded-lg hover:bg-gray-200 transition-colors"
+                >
+                  📊 Estadísticas
+                </button>
+              </section>
               </article>
             ))}
           </section>

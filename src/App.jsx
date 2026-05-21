@@ -26,9 +26,10 @@ import JugadorSesiones from './pages/jugador/Sesiones';
 import JugadorDocumentos from './pages/jugador/Documentos';
 import Perfil from './pages/Perfil';
 import NotFound from './pages/NotFound';
-
-
-
+import EntrenadorEstadisticas from './pages/entrenador/Estadisticas';
+import JugadorEstadisticas from './pages/jugador/Estadisticas';
+import TutorEstadisticas from './pages/tutor/Estadisticas';
+import EntrenadorEstadisticasTemporada from './pages/entrenador/EstadisticasTemporada';
 
 
 const RutaProtegida = ({ children, roles }) => {
@@ -71,6 +72,10 @@ function App() {
           <Route path="/jugador/chat/:sala_id" element={<RutaProtegida roles={['jugador']}><EntrenadorChat /></RutaProtegida>} />
           <Route path="/jugador/documentos" element={<RutaProtegida roles={['jugador']}><JugadorDocumentos /></RutaProtegida>} />
           <Route path="/perfil" element={<RutaProtegida roles={['admin', 'entrenador', 'tutor', 'jugador']}><Perfil /></RutaProtegida>} />
+          <Route path="/entrenador/equipos/:equipo_id/sesiones/:sesion_id/estadisticas" element={<RutaProtegida roles={['entrenador']}><EntrenadorEstadisticas /></RutaProtegida>} />
+          <Route path="/jugador/estadisticas" element={<RutaProtegida roles={['jugador']}><JugadorEstadisticas /></RutaProtegida>} />
+          <Route path="/tutor/estadisticas/:jugador_id" element={<RutaProtegida roles={['tutor']}><TutorEstadisticas /></RutaProtegida>} />
+          <Route path="/entrenador/equipos/:equipo_id/estadisticas" element={<RutaProtegida roles={['entrenador']}><EntrenadorEstadisticasTemporada /></RutaProtegida>} />
 
           <Route path="/register" element={<Register />} />
           <Route path="/vincular" element={<Vincular/>} />

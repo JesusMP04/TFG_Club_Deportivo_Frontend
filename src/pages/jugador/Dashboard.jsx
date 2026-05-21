@@ -84,6 +84,15 @@ export default function Dashboard() {
           )}
 
           <article
+            onClick={() => navigate('/jugador/estadisticas')}
+            className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 cursor-pointer hover:shadow-md hover:border-[#2222FF] transition-all"
+          >
+            <span className="text-4xl">📊</span>
+            <h3 className="text-lg font-semibold text-gray-800 mt-3">Mis Estadísticas</h3>
+            <p className="text-gray-500 text-sm mt-1">Goles y tarjetas de temporada</p>
+          </article>
+
+          <article
             onClick={() => perfil?.equipo_nombre
               ? navigate(`/jugador/chat/${encodeURIComponent(perfil.equipo_nombre)}`)
               : null

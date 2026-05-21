@@ -7,7 +7,6 @@ import Spinner from '../../components/Spinner';
 export default function Sesiones() {
   const { equipo_id } = useParams();
   const [sesiones, setSesiones] = useState([]);
-  const [equipo, setEquipo] = useState(null);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState('');
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
@@ -18,7 +17,6 @@ export default function Sesiones() {
 
   useEffect(() => {
     cargarSesiones();
-    cargarEquipo();
   }, []);
 
   const cargarSesiones = async () => {
@@ -29,15 +27,6 @@ export default function Sesiones() {
       setError('Error al cargar las sesiones');
     } finally {
       setCargando(false);
-    }
-  };
-
-  const cargarEquipo = async () => {
-    try {
-      const res = await api.get(`/equipos/${equipo_id}`);
-      setEquipo(res.data.equipo);
-    } catch (err) {
-      console.error('Error al cargar equipo');
     }
   };
 
@@ -94,7 +83,7 @@ export default function Sesiones() {
         <header className="flex flex-col gap-4 mb-8 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h2 className="text-2xl font-bold text-gray-800">
-              Sesiones {equipo ? `— ${equipo.nombre}` : ''}
+              Sesiones
             </h2>
             <p className="text-gray-500 mt-1">Entrenamientos y partidos del equipo</p>
           </div>
@@ -152,6 +141,11 @@ export default function Sesiones() {
                       <td className="px-6 py-4 text-gray-600">{s.descripcion || '—'}</td>
                       <td className="px-6 py-4 flex gap-3">
                         <button onClick={() => abrirEditar(s)} className="text-[#2222FF] hover:underline text-sm font-medium">Editar</button>
+                        {s.tipo === 'partido' && (
+                          <button onClick={() => navigate(`/entrenador/equipos/${equipo_id}/sesiones/${s.id}/estadisticas`)} className="text-purple-600 hover:underline text-sm font-medium">
+                            📊 Stats
+                          </button>
+                        )}
                         <button onClick={() => setModalEliminar(s.id)} className="text-red-500 hover:underline text-sm font-medium">Eliminar</button>
                       </td>
                     </tr>
