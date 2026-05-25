@@ -42,8 +42,8 @@ export default function Hijos() {
           <p className="text-gray-500 mt-1">Jugadores vinculados a tu cuenta</p>
 
           <button
-            onClick={() =>  navigate('/tutor/dashboard')}
-            className="bg-[#2222FF] text-white text-sm font-semibold px-5 py-2.5 rounded-lg hover:bg-blue-700 transition-colors"
+            onClick={() =>  navigate('/vincular')}
+            className="bg-[#2222FF] text-white text-sm font-semibold px-5 py-2.5 rounded-lg hover:bg-blue-700 transition-colors "
           >
             + Añadir hijo
           </button>
