@@ -79,7 +79,6 @@ function App() {
           <Route path="/jugador/estadisticas" element={<RutaProtegida roles={['jugador']}><JugadorEstadisticas /></RutaProtegida>} />
           <Route path="/tutor/estadisticas/:jugador_id" element={<RutaProtegida roles={['tutor']}><TutorEstadisticas /></RutaProtegida>} />
           <Route path="/entrenador/equipos/:equipo_id/estadisticas" element={<RutaProtegida roles={['entrenador']}><EntrenadorEstadisticasTemporada /></RutaProtegida>} />
-
           <Route path="/register" element={<Register />} />
           <Route path="/vincular" element={<Vincular/>} />
           <Route path="*" element={<NotFound/>} />
