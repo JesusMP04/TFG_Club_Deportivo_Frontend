@@ -49,6 +49,7 @@ function App() {
       <Toaster position="top-center" />
       <BrowserRouter>
         <Routes>
+          <Route path="/" element={<Login/>} />
           <Route path="/login" element={<Login />} />
           <Route path="/admin/dashboard" element={<RutaProtegida roles={['admin']}><Dashboard /></RutaProtegida>}/>
           <Route path="/admin/usuarios" element={<RutaProtegida roles={['admin']}><Usuarios /></RutaProtegida>}/>
