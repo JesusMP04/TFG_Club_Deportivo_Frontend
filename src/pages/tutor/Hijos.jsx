@@ -40,6 +40,13 @@ export default function Hijos() {
         <header className="mb-8">
           <h2 className="text-2xl font-bold text-gray-800">Mis Hijos</h2>
           <p className="text-gray-500 mt-1">Jugadores vinculados a tu cuenta</p>
+
+          <button
+            onClick={() =>  navigate('/tutor/dashboard')}
+            className="bg-[#2222FF] text-white text-sm font-semibold px-5 py-2.5 rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            + Añadir hijo
+          </button>
         </header>
 
         {cargando && <Spinner />}
